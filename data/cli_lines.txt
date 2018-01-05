@@ -1,4 +1,0 @@
-mudraw -r 600 -s mtf -o images/Latour-basic-%03d.png pdfs/Latour+pol+of+expln+from+Woolgar+vol+1988.pdf
-mudraw -r 600 -s mtf -G 1.4 -o images/Latour-ghigh-%03d.png pdfs/Latour+pol+of+expln+from+Woolgar+vol+1988.pdf
-mudraw -r 600 -s mtf -G 0.7 -o images/Latour-glow-%03d.png pdfs/Latour+pol+of+expln+from+Woolgar+vol+1988.pdf
-mudraw -r 600 -s mtf -A 0 -o images/Latour-noaa-%03d.png pdfs/Latour+pol+of+expln+from+Woolgar+vol+1988.pdf
