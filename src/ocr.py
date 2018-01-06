@@ -1,3 +1,4 @@
+import cv2
 import pytesseract
 from pathlib import Path
 from PIL import Image
@@ -12,10 +13,10 @@ def run_ocr(imgs: list):
 
 
 def open_images(filename: str):
-    image_dir = Path('../data/images')
+    image_dir = Path('./data/images')
     filenames = sorted(image_dir.glob(filename))
     imgs = []
     for f in filenames:
-        imgs.append(Image.open(f))
+        imgs.append(cv2.imread(str(f)))
 
     return imgs
