@@ -17,6 +17,6 @@ def open_images(filename: str):
     filenames = sorted(image_dir.glob(filename))
     imgs = []
     for f in filenames:
-        imgs.append(cv2.imread(str(f)))
+        imgs.append(cv2.imread(str(f), cv2.IMREAD_GRAYSCALE))
 
     return imgs
