@@ -6,7 +6,8 @@
 .idea
 *.iml
 out
-gen### Python template
+gen
+### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -112,18 +113,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 .DS_Store
-.idea/inspectionProfiles/
-.idea/misc.xml
-.idea/modules.xml
-.idea/ocr_experiments.iml
-.idea/vagrant.xml
-.idea/workspace.xml
-data/.DS_Store
-data/images/
-data/pdfs/
-data/texts/
+data/
 src/kernel-AMD_Radeon_Pro_450_Compute_Engine.bin
 src/kernel-Intel(R)_Core(TM)_i7-6700HQ_CPU_@_2.60GHz.bin
 src/kernel-Intel(R)_HD_Graphics_530.bin
 src/tesseract_opencl_profile_devices.dat
-*.zip
