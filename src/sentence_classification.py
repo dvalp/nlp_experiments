@@ -10,5 +10,5 @@ def build_nlp_dataframe():
 
     for lang in df['Taal'].unique():
         nlp = spacy.load(lang)
-        df.loc[df['Taal'] == lang, 'Spacy_Docs'] = df.loc[df['Taal'] == lang, 'Sentence'].apply(nlp)
+        df.loc[df['Taal'] == lang, 'Spacy_Docs'] = df.loc[df['Taal'] == lang, 'Sentence'].str.strip().apply(nlp)
     return df
