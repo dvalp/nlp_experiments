@@ -1,2 +1,7 @@
+nltk
+numpy
 opencv-python
+pandas
 pytesseract
+scikit-learn
+spacy
