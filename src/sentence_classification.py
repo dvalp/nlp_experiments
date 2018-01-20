@@ -16,3 +16,8 @@ def build_nlp_dataframe():
     df['No_Stops'] = df['Spacy_Docs'].apply(lambda doc: [w for w in doc if not w.is_stop and not w.is_punct])
     df['Stops'] = df['Spacy_Docs'].apply(lambda doc: [w for w in doc if w.is_stop])
     return df
+
+
+def get_tfidf_vectors(df):
+    tfidf = TfidfVectorizer()
+    return tfidf.fit_transform(df['No_Stops'].apply(lambda tokens: ' '.join([s.text for s in tokens])))
