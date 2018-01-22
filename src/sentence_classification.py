@@ -2,6 +2,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import spacy
 
+
 def build_nlp_dataframe():
     df = pd.read_csv("../data/sentences_legal_system_type.csv", index_col=False)
     df = df.append(
@@ -20,4 +21,14 @@ def build_nlp_dataframe():
 
 def get_tfidf_vectors(df):
     tfidf = TfidfVectorizer()
-    return tfidf.fit_transform(df['No_Stops'].apply(lambda tokens: ' '.join([s.text for s in tokens])))
+    return tfidf.fit_transform(df['No_Stops'].apply(lambda tokens: ' '.join([s.text for s in tokens]))), \
+           tfidf.vocabulary_
+
+
+def get_tfidf_terms(tfidf_model, vocab):
+    docs_tfidf = []
+    for item in tfidf_model:
+        idx = item.data.argsort()[::-1]
+        docs_tfidf.append(list(zip(vocab[item.indices[idx]], item.data[idx])))
+
+    return pd.Series(docs_tfidf)
