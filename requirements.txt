@@ -1,7 +1,17 @@
+black
+gensim
+ipdb
+ipython
+langdetect
+lxml
+mypy
 nltk
 numpy
 opencv-python
 pandas
+pylint
+pymc3
 pytesseract
+safety
 scikit-learn
 spacy
