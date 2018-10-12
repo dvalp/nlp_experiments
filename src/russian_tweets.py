@@ -11,4 +11,3 @@ def build_tweet_df() -> pd.DataFrame:
     df_rus[categorical_fields] = df_rus[categorical_fields].astype('category')
 
     return df_rus
-
