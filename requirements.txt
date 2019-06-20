@@ -1,4 +1,5 @@
 black
+ftfy
 gensim
 ipdb
 ipython
@@ -15,3 +16,4 @@ pytesseract
 safety
 scikit-learn
 spacy
+unidecode
