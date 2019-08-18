@@ -6,7 +6,7 @@ services:
   mongo:
     image: mongo
     container_name: mongodb
-    restart: always
+    restart: on-failure
     volumes:
       - mongodata:/data/db
     environment:
@@ -16,7 +16,7 @@ services:
   mongo-express:
     image: mongo-express
     container_name: mongo-express
-    restart: always
+    restart: on-failure
     depends_on:
       - mongo
     ports:
@@ -30,6 +30,7 @@ services:
       context: ./tesseract
       dockerfile: Dockerfile
     container_name: t4re-u194
+    restart: on-failure
     volumes:
       - ../data/:/home/work/data/
     tty: true
