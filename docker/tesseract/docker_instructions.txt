@@ -1,0 +1,7 @@
+Run these lines in this directory. Change '/host/absolute/path' to be the path to where the
+document images are stored for OCR. Directories should also include a subdirectory for
+storing the output text.
+
+docker build -t t4re-u19:0.1 .
+docker run -dt -v /host/absolute/path:/home/work/data --name t4re-u19 t4re-u19:0.1
+docker exec -ti t4re-u19 /bin/bash
