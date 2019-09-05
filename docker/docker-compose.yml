@@ -7,6 +7,8 @@ services:
     image: mongo
     container_name: mongodb
     restart: on-failure
+    ports:
+      - 27017:27017
     volumes:
       - mongodata:/data/db
     environment:
