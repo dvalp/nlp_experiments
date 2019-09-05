@@ -1,5 +1,7 @@
 black
+flashtext
 ftfy
+fuzzywuzzy
 gensim
 ipdb
 ipython
@@ -8,7 +10,7 @@ lxml
 mypy
 nltk
 numpy
-opencv-python
+opencv-contrib-python
 pandas
 pylint
 pymc3
