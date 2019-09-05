@@ -33,6 +33,8 @@ def build_tweet_df() -> pd.DataFrame:
 
     df_rus = df_rus[df_rus['language'] == 'English'].dropna(subset=['content'])
 
+    df_rus['publish_date'] = pd.to_datetime(df_rus['publish_date'], infer_datetime_format=True)
+    df_rus['harvested_date'] = pd.to_datetime(df_rus['harvested_date'], infer_datetime_format=True)
     categorical_fields = ['region', 'language', 'post_type', 'account_type', 'account_category']
     df_rus[categorical_fields] = df_rus[categorical_fields].astype('category')
 
