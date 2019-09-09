@@ -3,9 +3,14 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from pandas.io.json import json_normalize
+
+# TODO: Load from config file instead
+JSON_DIR = Path('../data/json_tweets/')
+TWEET_DIR = Path('../data/russian-troll-tweets')
 
 
-def build_tweet_df(filter_language: int = 'English', convert_dates=True) -> pd.DataFrame:
+def build_tweet_df(filter_language: int = 'English', convert_dates: bool = True) -> pd.DataFrame:
     """
     Create a DataFrame from directory of Russian troll tweets.
 
@@ -49,7 +54,7 @@ def build_tweet_df(filter_language: int = 'English', convert_dates=True) -> pd.D
                  'tco3_step1':         str}
 
     df_rus = pd.concat(
-        (pd.read_csv(csv, header=0, dtype=col_types) for csv in Path('../data/russian-troll-tweets').rglob('*.csv')),
+        (pd.read_csv(csv, header=0, dtype=col_types) for csv in TWEET_DIR.rglob('*.csv')),
         ignore_index=True)
 
     df_rus = df_rus[df_rus['language'] == filter_language].dropna(subset=['content'])
@@ -64,7 +69,7 @@ def build_tweet_df(filter_language: int = 'English', convert_dates=True) -> pd.D
     return df_rus
 
 
-def make_json_samples(df: pd.DataFrame, sample_size=20) -> None:
+def make_json_samples(df: pd.DataFrame, sample_size: int = 20) -> None:
     """
     Make a small set of JSON files from the tweet collection. This is only
     necessary for creating some sample documents for testing some code to
@@ -72,6 +77,10 @@ def make_json_samples(df: pd.DataFrame, sample_size=20) -> None:
 
     Note that the URLs are artificially moved into a sub group for testing
     the code with nested JSON.
+
+    Warning: Some tweet IDs are duplicated, it is possible that conflicts
+    will occur. This is just for creating some sample files, so no big
+    problem, but this is definitely not production ready.
 
     :param df: Tweet DataFrame created by build_tweet_df() (above)
     :param sample_size: Number of items to return
@@ -84,5 +93,40 @@ def make_json_samples(df: pd.DataFrame, sample_size=20) -> None:
             doc['urls'][field] = doc[field]
             del doc[field]
 
-        with open(Path('../data/json_tweets/', doc['tweet_id']), 'w') as fp:
+        with open(Path(JSON_DIR, f"{doc['tweet_id']}.json"), 'w') as fp:
             json.dump(doc, fp)
+
+
+def load_json_data() -> dict:
+    """
+    Load a directory of JSON files through a generator for reading into a
+    DataFrame.
+
+    :return: Each file as a dictionary
+    """
+    for file_name in JSON_DIR.rglob('*.json'):
+        with open(file_name, 'r') as fp:
+            yield json.load(fp)
+
+
+def flatten_tweets():
+    for doc in load_json_data():
+        doc.update(doc['urls'])
+        del doc['urls']
+        yield doc
+
+
+def build_tweet_df_from_json():
+    """
+    Use json_normalize() to create a DataFrame from dictionary objects.
+
+    :return: DataFrame from JSON objects
+    """
+    return json_normalize(load_json_data(), sep='_')
+
+
+def move_json_to_sql_db(dir_path: Path) -> None:
+    json_docs = []
+    for file_name in Path(dir_path).rglob('*.json'):
+        with open(file_name, 'r') as fp:
+            json_docs.append(json.load(fp))
