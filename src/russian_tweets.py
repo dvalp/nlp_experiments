@@ -109,7 +109,12 @@ def load_json_data() -> dict:
             yield json.load(fp)
 
 
-def flatten_tweets():
+def flatten_tweets() -> dict:
+    """
+    Reformat (flatten) JSON as necessary to fit in DB table.
+
+    :return: Dictionary of data for one document.
+    """
     for doc in load_json_data():
         doc.update(doc['urls'])
         del doc['urls']
