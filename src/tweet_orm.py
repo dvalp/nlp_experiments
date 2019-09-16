@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String, Sequence
+from sqlalchemy import Boolean, Column, Integer, String, Sequence, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -7,28 +7,28 @@ Base = declarative_base()
 class TweetDoc(Base):
     __tablename__ = 'russian_tweets'
 
-    id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
-    external_author_id = Column(String)
-    author = Column(String)
-    content = Column(String)
-    region = Column(String)
-    language = Column(String)
-    publish_date = Column(String)
-    harvested_date = Column(String)
+    id = Column(Integer, Sequence('tweet_id_seq'), primary_key=True)
+    external_author_id = Column(String(20))
+    author = Column(String(20))
+    content = Column(String(1000))
+    region = Column(String(20))
+    language = Column(String(20))
+    publish_date = Column(DateTime)
+    harvested_date = Column(DateTime)
     following = Column(Integer)
     followers = Column(Integer)
     updates = Column(Integer)
-    post_type = Column(String)
-    account_type = Column(String)
+    post_type = Column(String(20))
+    account_type = Column(String(20))
     retweet = Column(Boolean)
-    account_category = Column(String)
+    account_category = Column(String(20))
     new_june_2018 = Column(Boolean)
-    alt_external_id = Column(String)
-    tweet_id = Column(String)
-    article_url = Column(String)
-    tco1_step1 = Column(String)
-    tco2_step1 = Column(String)
-    tco3_step1 = Column(String)
+    alt_external_id = Column(String(20))
+    tweet_id = Column(String(20))
+    article_url = Column(String(100))
+    tco1_step1 = Column(String(300))
+    tco2_step1 = Column(String(300))
+    tco3_step1 = Column(String(300))
 
     def __repr__(self):
         return f"<TweetDoc(external_author_id='{self.external_author_id}', author='{self.author}', " \
