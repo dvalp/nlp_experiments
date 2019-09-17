@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -118,6 +119,8 @@ def flatten_tweets() -> dict:
     for doc in load_json_data():
         doc.update(doc['urls'])
         del doc['urls']
+        doc['publish_date'] = datetime.strptime(doc['publish_date'], '%m/%d/%Y %H:%M')
+        doc['harvested_date'] = datetime.strptime(doc['harvested_date'], '%m/%d/%Y %H:%M')
         yield doc
 
 
