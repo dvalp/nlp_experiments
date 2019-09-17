@@ -1,6 +1,11 @@
-from sqlalchemy import Boolean, Column, Integer, String, Sequence, DateTime
+from sqlalchemy import Boolean, Column, DateTime, Integer, Sequence, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
+from russian_tweets import flatten_tweets
+
+eng_sqlite = create_engine('sqlite:///:memory:', echo=True)
+Session = sessionmaker(bind=eng_sqlite)
 Base = declarative_base()
 
 
@@ -40,3 +45,16 @@ class TweetDoc(Base):
                f"alt_external_id='{self.alt_external_id}', tweet_id='{self.tweet_id}', " \
                f"article_url='{self.article_url}', tco1_step1='{self.tco1_step1}', tco2_step1='{self.tco2_step1}', " \
                f"tco3_step1='{self.tco3_step1}')>"
+
+
+def tweets_to_db():
+    TweetDoc.metadata.create_all(eng_sqlite)
+    sess = Session()
+    try:
+        sess.add_all(TweetDoc(**tweet) for tweet in flatten_tweets())
+        sess.commit()
+    except Exception as e:
+        sess.rollback()
+        raise e
+    finally:
+        sess.close()
