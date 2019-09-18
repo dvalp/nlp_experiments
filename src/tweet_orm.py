@@ -1,11 +1,16 @@
+import json
+
 from sqlalchemy import Boolean, Column, DateTime, Integer, Sequence, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from russian_tweets import flatten_tweets
 
-eng_sqlite = create_engine('sqlite:///:memory:', echo=True)
-Session = sessionmaker(bind=eng_sqlite)
+with open("../db_config.json", "r") as f:
+    config = json.load(f)
+
+engine = create_engine(config["postgres"]["connection_string"], echo=True)
+Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
 
@@ -48,7 +53,7 @@ class TweetDoc(Base):
 
 
 def tweets_to_db():
-    TweetDoc.metadata.create_all(eng_sqlite)
+    Base.metadata.create_all(engine)
     sess = Session()
     try:
         sess.add_all(TweetDoc(**tweet) for tweet in flatten_tweets())
