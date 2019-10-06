@@ -7,10 +7,16 @@ from sklearn.pipeline import Pipeline
 
 from russian_tweets import build_tweet_df
 
-df = build_tweet_df().sample(n=1000).reset_index()
-texts = [simple_preprocess(text) for text in df['content']]
 
-X_train, X_test, y_train, y_test = train_test_split(texts, df['account_category'], test_size=0.25)
+def get_balanced_sample():
+    df_all = build_tweet_df()
+    target_weights = df_all.groupby('account_category')['account_category'].transform('count')
+    df_sampled = df_all.sample(n=1000, weights=target_weights).reset_index()
+    texts = [simple_preprocess(text) for text in df_sampled['content']]
+    return train_test_split(texts, df_sampled['account_category'].tolist(), test_size=0.25)
+
+
+X_train, X_test, y_train, y_test = get_balanced_sample()
 
 
 def tfidf_standard():
