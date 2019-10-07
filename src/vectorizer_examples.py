@@ -1,4 +1,7 @@
+import gensim.downloader
+from gensim.models import FastText
 from gensim.utils import simple_preprocess
+from pathlib import Path
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
@@ -6,6 +9,9 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 
 from russian_tweets import build_tweet_df
+
+DEFAULT_FASTTEXT_MODEL = "fasttext-wiki-news-subwords-300"
+MODEL_DIRECTORY = "../data/gensim-data/"
 
 
 def get_balanced_sample():
@@ -15,7 +21,8 @@ def get_balanced_sample():
     texts = [simple_preprocess(text) for text in df_sampled['content']]
     return train_test_split(texts, df_sampled['account_category'].tolist(), test_size=0.25)
 
-
+# TODO: Replace this by changing parameters of functions that need these
+# This makes import slow, but ensures all functions can work with the same data
 X_train, X_test, y_train, y_test = get_balanced_sample()
 
 
@@ -51,3 +58,23 @@ def tfidf_pipeline():
     predicted = text_clf.predict(X_test)
 
     print(classification_report(y_test, predicted))
+
+
+# TODO: Add methods for downloading other models/languages (ie, from https://fasttext.cc)
+def load_ft_model(ft_model=DEFAULT_FASTTEXT_MODEL):
+    """
+    Download one of the pretrained models from:
+        https://github.com/RaRe-Technologies/gensim-data
+
+    Note: This download is 1GB, so it can take a while on a slow network
+
+    :return: Pretrained gensim model
+    """
+    model_path = Path(gensim.downloader.BASE_DIR, ft_model)
+    if model_path.exists():
+        model = FastText.load(model_path)
+    else:
+        gensim.downloader.BASE_DIR = MODEL_DIRECTORY
+        model = gensim.downloader.load(ft_model)
+
+    return model
