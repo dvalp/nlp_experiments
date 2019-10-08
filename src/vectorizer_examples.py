@@ -1,4 +1,5 @@
 import gensim.downloader
+import numpy as np
 from gensim.models import FastText
 from gensim.utils import simple_preprocess
 from pathlib import Path
@@ -20,6 +21,7 @@ def get_balanced_sample():
     df_sampled = df_all.sample(n=1000, weights=target_weights).reset_index()
     texts = [simple_preprocess(text) for text in df_sampled['content']]
     return train_test_split(texts, df_sampled['account_category'].tolist(), test_size=0.25)
+
 
 # TODO: Replace this by changing parameters of functions that need these
 # This makes import slow, but ensures all functions can work with the same data
@@ -61,7 +63,7 @@ def tfidf_pipeline():
 
 
 # TODO: Add methods for downloading other models/languages (ie, from https://fasttext.cc)
-def load_ft_model(ft_model=DEFAULT_FASTTEXT_MODEL):
+def load_pretrained_ft_model(ft_model=DEFAULT_FASTTEXT_MODEL):
     """
     Download one of the pretrained models from:
         https://github.com/RaRe-Technologies/gensim-data
@@ -74,7 +76,20 @@ def load_ft_model(ft_model=DEFAULT_FASTTEXT_MODEL):
     if model_path.exists():
         model = FastText.load(model_path)
     else:
-        gensim.downloader.BASE_DIR = MODEL_DIRECTORY
         model = gensim.downloader.load(ft_model)
 
     return model
+
+
+def doc_to_vector(corpus, model):
+    """
+    This has some issues:
+        * Should do weighted average, not just mean
+        * has issues if none of the words are in the model
+
+    :param corpus: Iterable of documents to transform
+    :param model: Vector model to apply
+    :return:
+    """
+    for doc in corpus:
+        yield np.asarray([model.get_vector(token) for token in doc if token in model]).mean(axis=0)
