@@ -28,7 +28,8 @@ def extract_rechtspraak_xml(filename: str):
 
 def read_xmls(xml_dir="data/sample_dataset/xmls/"):
     xml_paths = Path(xml_dir).rglob("*.xml")
-    return [extract_rechtspraak_xml(str(document)) for document in xml_paths]
+    for document in xml_paths:
+        yield extract_rechtspraak_xml(str(document))
 
 
 def elem2dict(node: etree) -> dict:
