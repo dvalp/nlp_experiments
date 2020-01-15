@@ -26,8 +26,8 @@ def extract_rechtspraak_xml(filename: str):
     return document_info
 
 
-def read_xmls():
-    xml_paths = Path("data/sample_dataset/xmls/").rglob("*.xml")
+def read_xmls(xml_dir="data/sample_dataset/xmls/"):
+    xml_paths = Path(xml_dir).rglob("*.xml")
     return [extract_rechtspraak_xml(str(document)) for document in xml_paths]
 
 
