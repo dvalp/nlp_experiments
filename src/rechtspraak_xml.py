@@ -1,3 +1,4 @@
+import pickle
 from pathlib import Path
 
 from lxml import etree
@@ -14,14 +15,26 @@ def extract_rechtspraak_xml(filename: str):
     document_info['abstract'] = [text.strip() for text in root.find('.//{*}inhoudsindicatie').itertext()
                                  if text.strip()]
     document_info['hasVersion'] = [text.strip() for text in root.find('.//{*}hasVersion').itertext() if text.strip()]
+    document_info['legal_domain'] = document_info.get('subject', '').split(';')[0]
 
     if root.find('.//{*}uitspraak') is not None:
-        document_info['text'] = [text.strip() for text in root.find('.//{*}uitspraak').itertext() if text.strip()]
-
+        text_element = root.find('.//{*}uitspraak').getchildren()
     elif root.find('.//{*}conclusie') is not None:
-        document_info['text'] = [text.strip() for text in root.find('.//{*}conclusie').itertext() if text.strip()]
+        text_element = root.find('.//{*}conclusie').getchildren()
     else:
-        print(filename)
+        print(f"Failed to find 'uitspraak' or 'conclusie': {filename}")
+
+    subsection_id = 1
+    for child in root.find('.//{*}uitspraak').getchildren():
+        child_text = [' '.join(text.split()) for text in child.itertext() if text.strip()]
+
+        if ".info" in child.tag:
+            document_info["text"]["info"] = child_text
+        elif child.attrib.get("role"):
+            document_info["text"][child.attrib.get("role")] = child_text
+        else:
+            document_info["text"][f"subsection_{subsection_id}"] = child_text
+            subsection_id += 1
 
     return document_info
 
@@ -47,10 +60,11 @@ def elem2dict(node: etree) -> dict:
     d = {}
     for element in node.iterchildren():
         key = etree.QName(element).localname
-        value = element.text if element.text else elem2dict(element)
+        value = element.text.strip() if element.text else elem2dict(element)
         d[key] = value
     return d
 
 
 if __name__ == '__main__':
-    read_xmls()
+    with open("rechtspraak_xml.py", "wb") as f:
+        pickle.dump(read_xmls(), f)
