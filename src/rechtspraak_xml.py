@@ -7,29 +7,44 @@ from lxml import etree
 
 def extract_rechtspraak_xml(filename: str):
     root = etree.parse(filename).getroot()
-    descriptions = root.find('.//{*}RDF').getchildren()
+    descriptions = root.find(".//{*}RDF").getchildren()
 
     document_info = elem2dict(descriptions.pop(0))
     for desc in descriptions:
-        document_info.update({key: value for key, value in elem2dict(desc).items() if key not in document_info})
+        document_info.update(
+            {
+                key: value
+                for key, value in elem2dict(desc).items()
+                if key not in document_info
+            }
+        )
 
-    document_info['abstract'] = [text.strip() for text in root.find('.//{*}inhoudsindicatie').itertext()
-                                 if text.strip()]
-    document_info['hasVersion'] = [text.strip() for text in root.find('.//{*}hasVersion').itertext() if text.strip()]
-    document_info['legal_domain'] = document_info.get('subject', '').split(';')[0]
+    document_info["abstract"] = [
+        text.strip()
+        for text in root.find(".//{*}inhoudsindicatie").itertext()
+        if text.strip()
+    ]
+    document_info["hasVersion"] = [
+        text.strip()
+        for text in root.find(".//{*}hasVersion").itertext()
+        if text.strip()
+    ]
+    document_info["legal_domain"] = document_info.get("subject", "").split(";")[0]
 
-    if root.find('.//{*}uitspraak') is not None:
-        text_elements = root.find('.//{*}uitspraak').getchildren()
-    elif root.find('.//{*}conclusie') is not None:
-        text_elements = root.find('.//{*}conclusie').getchildren()
+    if root.find(".//{*}uitspraak") is not None:
+        text_elements = root.find(".//{*}uitspraak").getchildren()
+    elif root.find(".//{*}conclusie") is not None:
+        text_elements = root.find(".//{*}conclusie").getchildren()
     else:
         text_elements = []
         print(f"Failed to find 'uitspraak' or 'conclusie': {filename}")
 
-    document_info['text'] = defaultdict(dict)
+    document_info["text"] = defaultdict(dict)
     subsection_id = 1
     for child in text_elements:
-        child_text = [' '.join(text.split()) for text in child.itertext() if text.strip()]
+        child_text = [
+            " ".join(text.split()) for text in child.itertext() if text.strip()
+        ]
 
         if ".info" in child.tag:
             document_info["text"]["info"] = child_text
@@ -68,6 +83,6 @@ def elem2dict(node: etree) -> dict:
     return d
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with open("rechtspraak_xml.py", "wb") as f:
         pickle.dump(read_xmls(), f)
