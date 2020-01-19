@@ -98,12 +98,12 @@ def elem2dict(node: etree) -> dict:
     :param node: lxml.etree Element
     :return: Dictionary containing the children of the original node.
     """
-    doc_imetadata = {}
+    doc_metadata = {}
     for element in node.iterchildren():
         key = etree.QName(element).localname
         value = element.text.strip() if element.text else elem2dict(element)
-        doc_imetadata[key] = value
-    return doc_imetadata
+        doc_metadata[key] = value
+    return doc_metadata
 
 
 if __name__ == "__main__":
