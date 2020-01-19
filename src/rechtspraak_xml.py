@@ -1,4 +1,5 @@
 import pickle
+from collections import defaultdict
 from pathlib import Path
 
 from lxml import etree
@@ -18,14 +19,16 @@ def extract_rechtspraak_xml(filename: str):
     document_info['legal_domain'] = document_info.get('subject', '').split(';')[0]
 
     if root.find('.//{*}uitspraak') is not None:
-        text_element = root.find('.//{*}uitspraak').getchildren()
+        text_elements = root.find('.//{*}uitspraak').getchildren()
     elif root.find('.//{*}conclusie') is not None:
-        text_element = root.find('.//{*}conclusie').getchildren()
+        text_elements = root.find('.//{*}conclusie').getchildren()
     else:
+        text_elements = []
         print(f"Failed to find 'uitspraak' or 'conclusie': {filename}")
 
+    document_info['text'] = defaultdict(dict)
     subsection_id = 1
-    for child in root.find('.//{*}uitspraak').getchildren():
+    for child in text_elements:
         child_text = [' '.join(text.split()) for text in child.itertext() if text.strip()]
 
         if ".info" in child.tag:
