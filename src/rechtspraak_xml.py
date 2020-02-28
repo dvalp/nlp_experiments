@@ -107,5 +107,5 @@ def elem2dict(node: etree) -> dict:
 
 
 if __name__ == "__main__":
-    with open("rechtspraak_xml.py", "wb") as f:
+    with open("rechtspraak_texts.pkl", "wb") as f:
         pickle.dump(read_xmls(), f)
