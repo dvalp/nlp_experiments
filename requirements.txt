@@ -18,5 +18,5 @@ pymc3
 pytesseract
 safety
 scikit-learn
-spacy
+spacy[lookups]
 unidecode
