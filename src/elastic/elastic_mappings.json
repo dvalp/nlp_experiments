@@ -1,0 +1,15 @@
+{
+  "word_vectors": {
+    "mappings": {
+      "properties": {
+        "page_text": {
+          "type": "text"
+        },
+        "page_vector": {
+          "type": "dense_vector",
+          "dims": 100
+        }
+      }
+    }
+  }
+}
