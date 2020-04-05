@@ -7,8 +7,8 @@ from spacy.tokens.doc import Doc
 from src.rechtspraak_xml import read_xmls
 
 
-def xml_docs() -> Generator[str]:
-    docs = list(read_xmls("nlp_experiments/data/sample_dataset/xmls/"))
+def xml_docs() -> Generator[str, None, None]:
+    docs = list(read_xmls("data/sample_dataset/xmls/"))
     letters = set(ascii_letters)
 
     for doc in docs:
@@ -21,7 +21,7 @@ def xml_docs() -> Generator[str]:
         yield ' '.join(section_texts).strip()
 
 
-def create_spacy_objects(texts: Collection[str]) -> Generator[Doc]:
+def create_spacy_objects(texts: Collection[str]) -> Generator[Doc, None, None]:
     nlp = nl_core_news_sm.load()
     for text in texts:
         yield nlp(text)
