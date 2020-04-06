@@ -1,4 +1,4 @@
-sqlalchemy
+beautifulsoup4
 black
 elasticsearch
 flashtext
@@ -20,4 +20,6 @@ pytesseract
 safety
 scikit-learn
 spacy[lookups]
+sqlalchemy
+tqdm
 unidecode

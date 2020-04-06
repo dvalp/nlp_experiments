@@ -3,7 +3,8 @@
     "mappings": {
       "properties": {
         "page_text": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "dutch"
         },
         "page_vector": {
           "type": "dense_vector",
