@@ -10,13 +10,24 @@ from tqdm import tqdm
 
 from elastic.elasticsearch_connection import INDEX_NAME, ES_CONTEXT
 
+MODEL_PATH = "vector_models/fast_text_vectors/fast_text.mod"
 
-def train_model(sentences: Collection[str]):
+
+def train_model(sentences: Collection[str], save_path=MODEL_PATH):
     model = FastText(size=100)
     model.build_vocab(sentences=sentences)
     model.train(sentences=sentences, total_examples=model.corpus_count, epochs=50)
-    model.save("vector_models/fast_text_vectors/fast_text.mod")
+    model.save(save_path)
     return model
+
+
+def load_model(load_path=MODEL_PATH):
+    try:
+        return FastText.load(load_path)
+    except FileNotFoundError as e:
+        print("The model does not exist at this location, try creating it or "
+              "use another path.")
+        raise e
 
 
 def create_training_sentences(html_pages: Collection[str]):
