@@ -59,8 +59,14 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.6.2
+    environment:
+      ELASTICSEARCH_URL: http://elastic:9200
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+    container_name: kibana
     networks:
       - nlp
+    ports:
+      - 5601:5601
     depends_on:
       - elastic
 
