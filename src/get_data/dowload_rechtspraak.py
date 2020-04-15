@@ -35,13 +35,12 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description="Download and extract documents from rechtspraak.nl")
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("-r", "--refetch", action="store_true", help="Download XML files again")
-    group.add_argument("-y", "--year", default="2020", help="Year to download from (four digit year)")
-    group.add_argument("-m", "--month", default="01",
-                       help="Month to download from (two digit month or 'all' for the whole year)")
-    group.add_argument("-c", "--case-count", default=20, type=int, help="Number of cases to download")
-    group.add_argument("-x", "--xml-only", action="store_true", help="Only download the XML versions, not the PDFs")
+    parser.add_argument("-r", "--refetch", action="store_true", help="Download XML files again")
+    parser.add_argument("-y", "--year", default="2020", help="Year to download from (four digit year)")
+    parser.add_argument("-m", "--month", default="01",
+                        help="Month to download from (two digit month or 'all' for the whole year)")
+    parser.add_argument("-c", "--case-count", default=20, type=int, help="Number of cases to download")
+    parser.add_argument("-x", "--xml-only", action="store_true", help="Only download the XML versions, not the PDFs")
 
     args = parser.parse_args()
 
