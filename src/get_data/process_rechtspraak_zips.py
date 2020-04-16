@@ -54,6 +54,7 @@ def extract_xml(year: str, month: str, refetch=False) -> None:
 
 
 def extract_pdf():
+    # TODO: Make this happen
     pass
 
 
@@ -65,7 +66,13 @@ if __name__ == '__main__':
     parser.add_argument("-y", "--year", default="2020", help="Year to download from (four digit year)")
     parser.add_argument("-m", "--month", default="01",
                         help="Month to download from (two digit month or 'all' for the whole year)")
-    parser.add_argument("-c", "--case-count", default=20, type=int, help="Number of cases to download")
-    parser.add_argument("-x", "--xml-only", action="store_true", help="Only download the XML versions, not the PDFs")
-
+    parser.add_argument("-d", "--download-only", action="stroe_true",
+                        help="Only download the main zip file, don't unpack any months.")
+    parser.add_argument("-p", "--download-pdfs", action="store_true",
+                        help="Also download PDFs for any extracted XML files.")
     args = parser.parse_args()
+
+    if args.download_only:
+        download_uitspraak_zip()
+    else:
+        extract_xml(year=args.year, month=args.month, refetch=args.refetch)
