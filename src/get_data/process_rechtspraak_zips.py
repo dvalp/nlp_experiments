@@ -1,4 +1,6 @@
 from pathlib import Path
+from zipfile import ZipFile
+
 import requests
 
 UITSPRAAK_DIR = Path("../../data/uitspraak_documents")
@@ -7,7 +9,6 @@ ZIP_DIR = Path(UITSPRAAK_DIR, "zipfiles")
 PDF_DIR = Path(UITSPRAAK_DIR, "pdfs")
 ZIP_FILE = Path(ZIP_DIR, 'OpenDataUitspraken.zip')
 PARSED_FILE = Path(UITSPRAAK_DIR, "parsed_xmls.pkl")
-SMALL_ZIP_FILE_NAME = ['Uitspraken201712.zip']
 
 
 def download_uitspraak_zip(url="http://static.rechtspraak.nl/PI/OpenDataUitspraken.zip", chunk_size=128):
@@ -19,12 +20,28 @@ def download_uitspraak_zip(url="http://static.rechtspraak.nl/PI/OpenDataUitsprak
 
 def extract_xml(year: str, month: str, min_length=5000, refetch=False) -> None:
     year = str(year)
-    month = str(month)
+    month = str(month).zfill(2)
 
     XML_DIR.mkdir(parents=True, exist_ok=True)
     ZIP_DIR.mkdir(parents=True, exist_ok=True)
     xml_subset = XML_DIR/year/month
 
+    if month == "all":
+        months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+    else:
+        months = [month]
+    xml_dirs_exist = all((XML_DIR/year/month_number).is_dir() for month_number in months)
+
+    if xml_dirs_exist and not refetch:
+        print("XML directory is available for the given months, refetch if files are missing.")
+    else:
+        # Extract XMLs from ZIP files
+        with ZipFile(ZIP_FILE, 'r') as zip:
+            if month == 'all':
+                files_list = [name for name in zip.namelist() if name.startswith(year)]
+            else:
+                files_list = [f'{year}/{year}{month}.zip']
+            zip.extractall(path=ZIP_DIR, members=files_list)
 
 
 def extract_pdf():
