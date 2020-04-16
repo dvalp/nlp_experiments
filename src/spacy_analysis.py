@@ -4,8 +4,6 @@ from typing import Collection, Generator
 import nl_core_news_sm
 from spacy.tokens.doc import Doc
 
-from src.rechtspraak_xml import read_xmls
-
 
 def xml_docs() -> Generator[str, None, None]:
     docs = list(read_xmls("data/sample_dataset/xmls/"))

@@ -67,6 +67,8 @@ def extract_xml_files(year: str, month="all", min_size=5000, unlink=True) -> Non
     else:
         zip_paths = (ZIP_DIR / f'{year}/{year}{month}.zip')
 
+    extract_month_zips(year=year, month=month)
+
     for fname in zip_paths:
         month = fname.name[4:6]
         with ZipFile(fname, 'r') as z:
@@ -74,7 +76,7 @@ def extract_xml_files(year: str, month="all", min_size=5000, unlink=True) -> Non
             members = (inf.filename for inf in z.infolist() if inf.file_size > min_size)
             z.extractall(path=save_path, members=members)
 
-        # don't keep extra zip files around
+        # don't keep completed zip files around
         if unlink:
             fname.unlink()
 
@@ -101,4 +103,4 @@ if __name__ == '__main__':
     if args.download_only:
         download_uitspraak_zip()
     else:
-        extract_month_zips(year=args.year, month=args.month, refetch=args.refetch)
+        extract_xml_files(year=args.year, month=args.month)
