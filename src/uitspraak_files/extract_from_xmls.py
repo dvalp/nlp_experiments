@@ -15,7 +15,7 @@ from typing import Dict, Any, Iterator
 from lxml import etree
 
 from uitspraak_files.process_rechtspraak_zips import XML_DIR
-from vector_models.fasttext_model import vectorize_text, load_model
+from vector_models.fasttext_model import vectorize_text, load_model, VECTOR_SIZE
 
 
 def parse_xmls() -> Iterator[Dict[str, Any]]:
@@ -25,7 +25,12 @@ def parse_xmls() -> Iterator[Dict[str, Any]]:
 
     :return: Dict of data from an XML file
     """
-    vector_model = load_model()
+    try:
+        vector_model = load_model()
+    except FileNotFoundError as fnf:
+        vector_model = None
+        print("No model was loaded because it could not be found, word vectors will be set to zeroes. "
+              "This is necessary if training a model for the first time.")
 
     for fname in XML_DIR.rglob('*.xml'):
         root = etree.parse(str(fname)).getroot()
@@ -88,6 +93,8 @@ def parse_xmls() -> Iterator[Dict[str, Any]]:
 
 
 def apply_doc_vector(text: Dict[str, Any], model):
+    if model is None:
+        return [0.0] * VECTOR_SIZE
     return vectorize_text(' '.join(chain(*text.values())), ft_model=model)
 
 
