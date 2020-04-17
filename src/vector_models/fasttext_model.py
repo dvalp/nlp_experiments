@@ -1,4 +1,4 @@
-from typing import Collection
+from typing import Collection, Iterator
 
 import numpy as np
 from bs4 import BeautifulSoup
@@ -30,13 +30,10 @@ def load_model(load_path=MODEL_PATH):
         raise e
 
 
-def create_training_sentences(html_pages: Collection[str]):
-    tokenized_sentences = []
-    for page in html_pages:
+def create_training_sentences(training_pages: Iterator[str]):
+    for page in training_pages:
         for sentence in get_sentences(page):
-            tokenized_sentences.append(simple_preprocess(sentence))
-
-    return tokenized_sentences
+            yield simple_preprocess(sentence)
 
 
 def vectorize_text(page: str, ft_model: FastText):

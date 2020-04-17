@@ -9,20 +9,24 @@ TODO: The recursive function that makes a dictionary does not handle duplicate
     fields well.
 """
 from collections import defaultdict
-from typing import Dict
+from itertools import chain
+from typing import Dict, Any, Iterator
 
 from lxml import etree
 
-from uitspraak_files.download_uitspraken import XML_DIR
+from uitspraak_files.process_rechtspraak_zips import XML_DIR
+from vector_models.fasttext_model import vectorize_text, load_model
 
 
-def parse_xmls() -> Dict[str, str]:
+def parse_xmls() -> Iterator[Dict[str, Any]]:
     """
     The main work of extracting information from an xml is done here. Improving
     access to the metadata by fields would help a lot.
 
     :return: Dict of data from an XML file
     """
+    vector_model = load_model()
+
     for fname in XML_DIR.rglob('*.xml'):
         root = etree.parse(str(fname)).getroot()
         datafields = root.find(".//{*}RDF").getchildren()
@@ -38,11 +42,16 @@ def parse_xmls() -> Dict[str, str]:
                 }
             )
 
-        document_info["abstract"] = [
-            text.strip()
-            for text in root.find(".//{*}inhoudsindicatie").itertext()
-            if text.strip()
-        ]
+        match = root.find(".//{*}inhoudsindicatie")
+        if match is not None:
+            document_info["abstract"] = [
+                text.strip()
+                for text in match.itertext()
+                if text.strip()
+            ]
+        else:
+            document_info["abstract"] = [""]
+
         document_info["hasVersion"] = [
             text.strip()
             for text in root.find(".//{*}hasVersion").itertext()
@@ -73,7 +82,13 @@ def parse_xmls() -> Dict[str, str]:
                 document_info["text"][f"subsection_{subsection_id}"] = child_text
                 subsection_id += 1
 
+        document_info["doc_vector"] = apply_doc_vector(document_info["text"], model=vector_model)
+
         yield document_info
+
+
+def apply_doc_vector(text: Dict[str, Any], model):
+    return vectorize_text(' '.join(chain(*text.values())), ft_model=model)
 
 
 def elem2dict(node: etree) -> dict:
