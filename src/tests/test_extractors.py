@@ -17,6 +17,7 @@ from extractors import email_extractor
     ("something@@somewhere.com", "something@@somewhere.com", False),
     ("jsmith@apache.c", "jsmith@apache.c", False),
     ("A@b@c@example.com", "A@b@c@example.com", False),
+    ("asdf  asdfjj ofv lsdfk", "jsmith@apache.org", False)
 ])
 class TestEmailExtraction:
     def test_email_extractor(self, text: str, email: str, expected: bool):

@@ -1,4 +1,5 @@
 import re
+from typing import Iterable
 
 regex = re.compile(
     r"([a-z0-9!#$%&*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
@@ -7,5 +8,5 @@ regex = re.compile(
 )
 
 
-def email_extractor(text: str):
+def email_extractor(text: str) -> Iterable[re.Match]:
     return (result for result in re.finditer(regex, text))
