@@ -17,6 +17,7 @@ pandas
 pylint
 pymc3
 pytesseract
+pytest
 requests
 safety
 scikit-learn
