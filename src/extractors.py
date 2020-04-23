@@ -8,4 +8,4 @@ regex = re.compile(
 
 
 def email_extractor(text: str):
-    return ((result.group(), result.start(), result.end()) for result in re.finditer(regex, text))
+    return (result for result in re.finditer(regex, text))

@@ -20,4 +20,4 @@ from extractors import email_extractor
 ])
 class TestEmailExtraction:
     def test_email_extractor(self, text: str, email: str, expected: bool):
-        assert any((email == result[0]) for result in email_extractor(text)) == expected
+        assert any((email == result.group()) for result in email_extractor(text)) == expected
