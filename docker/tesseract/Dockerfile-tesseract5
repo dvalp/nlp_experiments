@@ -1,0 +1,16 @@
+#
+# Tesseract 4 OCR Runtime Environment - Docker Container
+#
+
+FROM debian:buster-slim
+
+LABEL description="Container using Debian 10.3 (Buster) to run Tesseract 5"
+LABEL version="0.2"
+LABEL author="David Valpey"
+
+RUN apt-get update && apt-get install -y wget gnupg && apt-get autoremove && apt-get clean
+RUN echo "deb https://notesalexp.org/tesseract-ocr-dev/buster/ buster main" >> /etc/apt/sources.list
+RUN wget -O - https://notesalexp.org/debian/alexp_key.asc | apt-key add -
+RUN apt-get update && apt-get install -y apt-transport-https tesseract-ocr && apt-get autoremove && apt-get clean
+
+CMD /bin/bash

@@ -31,7 +31,7 @@ services:
     build:
       context: ./tesseract
       dockerfile: Dockerfile
-    container_name: t4re-u194
+    container_name: tesseract
     restart: on-failure
     volumes:
       - ../data/:/home/work/data/
