@@ -30,7 +30,7 @@ services:
   tesseract:
     build:
       context: ./tesseract
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-tesseract5
     container_name: tesseract
     restart: on-failure
     volumes:
@@ -67,6 +67,21 @@ services:
       - nlp
     ports:
       - 5601:5601
+    depends_on:
+      - elastic
+
+  logstash:
+    build:
+      context: ./logstash
+      dockerfile: Dockerfile
+    environment:
+      ELASTICSEARCH_URL: http://elastic:9200
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+    container_name: logstash
+    networks:
+      - nlp
+    ports:
+      - 5044:5044
     depends_on:
       - elastic
 
