@@ -38,7 +38,7 @@ services:
     tty: true
 
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
     container_name: elastic
     environment:
       - node.name=elastic
@@ -58,7 +58,7 @@ services:
       - nlp
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.6.2
+    image: docker.elastic.co/kibana/kibana:7.8.0
     environment:
       ELASTICSEARCH_URL: http://elastic:9200
       ELASTICSEARCH_HOSTS: http://elastic:9200
