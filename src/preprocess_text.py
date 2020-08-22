@@ -71,3 +71,9 @@ def ngrams(sequence, min_len=1, max_len=3):
         for item in sequence[n:]:
             gram.append(item)
             yield tuple(gram)
+
+
+def ngrams_zip(string, n=3):
+    string = re.sub(r'[,-./]|\sBD',r'', string)
+    ngram_groups = zip(*[string[i:] for i in range(n)])
+    return [''.join(ngram) for ngram in ngram_groups]
