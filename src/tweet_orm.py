@@ -40,6 +40,14 @@ class TweetDoc(Base):
     tco2_step1 = Column(String(300))
     tco3_step1 = Column(String(300))
 
+    def __eq__(self, other):
+        ignore_fields = {"_sa_instance_state", "id"}
+        return all((value == other.__dict__[key]) for key, value in self.__dict__.items()
+                   if key not in ignore_fields)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __repr__(self):
         return f"<TweetDoc(external_author_id='{self.external_author_id}', author='{self.author}', " \
                f"content='{self.content}', region='{self.region}', language='{self.language}', " \
@@ -54,12 +62,16 @@ class TweetDoc(Base):
 
 def tweets_to_db():
     Base.metadata.create_all(engine)
-    sess = Session()
+    session = Session()
     try:
-        sess.add_all(TweetDoc(**tweet) for tweet in flatten_tweets())
-        sess.commit()
+        for tweet in flatten_tweets():
+            tweet_doc = TweetDoc(**tweet)
+            results = session.query(TweetDoc).filter_by(tweet_id=tweet_doc.tweet_id)
+            if not any(tweet_doc == result for result in results):
+                session.add(tweet_doc)
+        session.commit()
     except Exception as e:
-        sess.rollback()
+        session.rollback()
         raise e
     finally:
-        sess.close()
+        session.close()
