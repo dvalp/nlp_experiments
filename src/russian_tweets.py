@@ -11,7 +11,7 @@ JSON_DIR = Path('../data/json_tweets/')
 TWEET_DIR = Path('../data/russian-troll-tweets')
 
 
-def build_tweet_df(filter_language: int = 'English', convert_dates: bool = True) -> pd.DataFrame:
+def build_tweet_df(filter_language: str = 'English', convert_dates: bool = True) -> pd.DataFrame:
     """
     Create a DataFrame from directory of Russian troll tweets.
 
@@ -86,7 +86,11 @@ def make_json_samples(df: pd.DataFrame, sample_size: int = 20) -> None:
     :param df: Tweet DataFrame created by build_tweet_df() (above)
     :param sample_size: Number of items to return
     """
-    docs = df.sample(n=sample_size).to_dict(orient='records')
+    convert_fields = ['publish_date', 'harvested_date', 'region', 'language', 'post_type', 'account_type',
+                      'account_category']
+    df[convert_fields] = df[convert_fields].astype(str)
+
+    docs = df.sample(n=sample_size).fillna("nan").to_dict(orient='records')
 
     for doc in docs:
         doc['urls'] = {}
@@ -119,8 +123,13 @@ def flatten_tweets() -> dict:
     for doc in load_json_data():
         doc.update(doc['urls'])
         del doc['urls']
-        doc['publish_date'] = datetime.strptime(doc['publish_date'], '%m/%d/%Y %H:%M')
-        doc['harvested_date'] = datetime.strptime(doc['harvested_date'], '%m/%d/%Y %H:%M')
+        doc['publish_date'] = datetime.strptime(doc['publish_date'], '%Y-%m-%d %H:%M:%S')
+        doc['harvested_date'] = datetime.strptime(doc['harvested_date'], '%Y-%m-%d %H:%M:%S')
+
+        for key, value in doc.items():
+            if value == "nan":
+                doc[key] = None
+
         yield doc
 
 

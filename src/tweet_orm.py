@@ -9,7 +9,7 @@ from russian_tweets import flatten_tweets
 with open("../db_config.json", "r") as f:
     config = json.load(f)
 
-engine = create_engine(config["postgres"]["connection_string"], echo=True)
+engine = create_engine(config["sqlite"]["connection_string"], echo=True)
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
