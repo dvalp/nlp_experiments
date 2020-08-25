@@ -10,9 +10,7 @@ def create_json_samples(args):
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser(description="Process text files for NLP")
-    parser.add_argument('--foo', action='store_true', help='foo help')
     subparsers = parser.add_subparsers(help='sub-command help')
 
     parser_db = subparsers.add_parser("store-tweets", help="Process tweets into a database for later use")
