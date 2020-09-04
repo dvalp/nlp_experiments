@@ -1,6 +1,6 @@
 import argparse
 
-from russian_tweets.russian_tweets import build_tweet_df, make_json_samples
+from russian_tweets.russian_tweets_json import build_tweet_df, make_json_samples
 from db_models.tweet_orm import tweets_to_db
 
 

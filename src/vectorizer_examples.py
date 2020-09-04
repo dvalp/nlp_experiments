@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 
-from russian_tweets.russian_tweets import build_tweet_df
+from russian_tweets.russian_tweets_json import build_tweet_df
 
 DEFAULT_FASTTEXT_MODEL = "fasttext-wiki-news-subwords-300"
 MODEL_DIRECTORY = "../data/gensim-data/"

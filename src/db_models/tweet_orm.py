@@ -4,7 +4,7 @@ from sqlalchemy import Boolean, Column, DateTime, Integer, Sequence, String, cre
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from russian_tweets.russian_tweets import flatten_tweets
+from russian_tweets.russian_tweets_json import flatten_tweets
 
 with open("../../db_config.json", "r") as f:
     config = json.load(f)
