@@ -7,8 +7,8 @@ import pandas as pd
 from pandas.io.json import json_normalize
 
 # TODO: Load from config file instead
-JSON_DIR = Path('../data/json_tweets/')
-TWEET_DIR = Path('../data/russian-troll-tweets')
+JSON_DIR = Path('../../data/json_tweets/')
+TWEET_DIR = Path('../../data/russian-troll-tweets')
 
 
 def build_tweet_df(filter_language: str = 'English', convert_dates: bool = True) -> pd.DataFrame:
