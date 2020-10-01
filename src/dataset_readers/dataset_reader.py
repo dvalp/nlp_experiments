@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-
-from dataset_readers.russian_tweets_reader import TWEET_FILE_EXTENSION
+from typing import NamedTuple
 
 
 class DatasetReader(ABC):
@@ -9,9 +8,9 @@ class DatasetReader(ABC):
         self.document_location: str = document_location
         self.document_extension: str = document_extension
 
-    def load_documents(self):
-        for fp in Path(self.document_location).rglob(f"*.{TWEET_FILE_EXTENSION}"):
-            self.convert_document(fp)
+    def load_documents(self, file_extension: str) -> NamedTuple:
+        for fp in Path(self.document_location).rglob(f"*.{file_extension}"):
+            yield self.convert_document(fp)
 
     @abstractmethod
     def convert_document(self, fp: Path):
