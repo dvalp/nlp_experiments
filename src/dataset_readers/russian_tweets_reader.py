@@ -17,9 +17,6 @@ class RussianTweetReader(DatasetReader):
     ):
         super().__init__(document_location, document_extension)
 
-    def load_documents(self, file_extension: str = TWEET_FILE_EXTENSION) -> RussianTweetData:
-        yield super(RussianTweetReader, self).load_documents(file_extension)
-
     def convert_document(self, fp: Path) -> RussianTweetData:
         with open(fp) as csv_file:
             csv_reader = csv.reader(csv_file)
