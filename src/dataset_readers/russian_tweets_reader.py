@@ -5,15 +5,12 @@ from pathlib import Path
 from data_structures.russian_tweet_data import RussianTweetData
 from dataset_readers.dataset_reader import DatasetReader
 
-TWEET_DIR = "../data/russian-troll-tweets"
-TWEET_FILE_EXTENSION = "csv"
-
 
 class RussianTweetReader(DatasetReader):
     def __init__(
             self,
-            document_location: str = TWEET_DIR,
-            document_extension: str = TWEET_FILE_EXTENSION
+            document_location: str = "../data/russian-troll-tweets",
+            document_extension: str = "csv"
     ):
         super().__init__(document_location, document_extension)
 
@@ -37,3 +34,6 @@ class RussianTweetReader(DatasetReader):
                     tweet_data[bool_field] = bool(tweet_data[bool_field])
 
                 yield RussianTweetData(**tweet_data)
+
+    def convert_datatypes(self):
+        pass
