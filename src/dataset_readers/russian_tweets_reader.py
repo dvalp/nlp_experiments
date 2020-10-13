@@ -1,4 +1,5 @@
 import csv
+import functools
 from datetime import datetime
 from pathlib import Path
 
@@ -22,18 +23,22 @@ class RussianTweetReader(DatasetReader):
                 fields = list(zip(headers, row))
                 fields.append(("file_path", str(fp)))
 
-                tweet_data = dict(fields)
-
-                for date_field in {"publish_date", "harvested_date"}:
-                    tweet_data[date_field] = datetime.strptime(tweet_data[date_field], "%m/%d/%Y %H:%M")
-
-                for int_field in {"following", "followers", "updates"}:
-                    tweet_data[int_field] = int(tweet_data[int_field])
-
-                for bool_field in {"retweet", "new_june_2018"}:
-                    tweet_data[bool_field] = bool(tweet_data[bool_field])
+                tweet_data = self.convert_datatypes(dict(fields))
 
                 yield RussianTweetData(**tweet_data)
 
-    def convert_datatypes(self):
-        pass
+    @staticmethod
+    def convert_datatypes(tweet_data: dict):
+        date_parse = functools.partial(datetime.strptime, format="%m/%d/%Y %H:%M")
+        actions = {
+            (int, {"following", "followers", "updates"}),
+            (bool, {"retweet", "new_june_2018"}),
+            (date_parse, {"publish_date", "harvested_date"})
+        }
+
+        for (action, fields) in actions:
+            for field in fields:
+                tweet_data[field] = action(tweet_data[field])
+
+        return tweet_data
+
