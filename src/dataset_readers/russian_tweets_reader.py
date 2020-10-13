@@ -1,7 +1,6 @@
-import itertools
+import csv
 from datetime import datetime
 from pathlib import Path
-import csv
 
 from data_structures.russian_tweet_data import RussianTweetData
 from dataset_readers.dataset_reader import DatasetReader
