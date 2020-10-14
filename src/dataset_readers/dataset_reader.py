@@ -14,6 +14,12 @@ class DatasetReader(ABC):
     def convert_document(self, fp: Path):
         pass
 
+    def __enter__(self):
+        return self.data_points
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
     def __iter__(self):
         for record in self.data_points:
             yield record
