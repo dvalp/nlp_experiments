@@ -27,14 +27,12 @@ class RussianTweetReader(DatasetReader):
 
                 yield RussianTweetData(**tweet_data)
 
-    @staticmethod
-    def convert_datatypes(tweet_data: dict):
-        date_parse = functools.partial(datetime.strptime, format="%m/%d/%Y %H:%M")
-        actions = {
+    def convert_datatypes(self, tweet_data: dict):
+        actions = (
             (int, {"following", "followers", "updates"}),
             (bool, {"retweet", "new_june_2018"}),
-            (date_parse, {"publish_date", "harvested_date"})
-        }
+            (self.partial_strptime, {"publish_date", "harvested_date"})
+        )
 
         for (action, fields) in actions:
             for field in fields:
@@ -42,3 +40,6 @@ class RussianTweetReader(DatasetReader):
 
         return tweet_data
 
+    @staticmethod
+    def partial_strptime(date_value: str) -> datetime:
+        return datetime.strptime(date_value, "%m/%d/%Y %H:%M")
