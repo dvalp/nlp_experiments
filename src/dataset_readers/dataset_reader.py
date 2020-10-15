@@ -8,15 +8,17 @@ Optionally to be used as a context manager in cases where setup/teardown are
 required (if reading from a stream for example.
 """
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import NamedTuple, Iterable
+from typing import NamedTuple
 
 
 class DatasetReader(ABC):
     def __init__(self, document_location: str, document_extension: str):
         self.document_location: str = document_location
         self.document_extension: str = document_extension
+        self.data_points = self.data_iterator()
 
     @abstractmethod
     def convert_document(self, fp: Path) -> NamedTuple:
@@ -30,9 +32,9 @@ class DatasetReader(ABC):
         """
         pass
 
-    def __enter__(self) -> Iterable:
+    def __enter__(self) -> DatasetReader:
         """
-        Provide a context manager for the data processing, in case where it
+        Provide a context manager for the data processing, in cases where
         teardown operations are desired (ie, when processing a stream).
 
         :return: The iterable for this class
@@ -53,15 +55,23 @@ class DatasetReader(ABC):
 
     def __iter__(self) -> DatasetReader:
         """
-        Load files containing data points read each record from the file,
-        sending it to be processed.
+        Because of the __next__() implementation, the class is already iterable.
 
-        :return: A record transformed into the internal data representation
+        :return: A class that iterates through data points
         """
         return self
 
     def __next__(self) -> NamedTuple:
+        """
+        Allows the class to iterate through the individual data points loaded
+        from the document set using a stored state for the class instance.
+
+        :return: One data point from the document set
+        """
+        return next(self.data_points)
+
+    def data_iterator(self) -> NamedTuple:
         data_files = Path(self.document_location).rglob(f"*.{self.document_extension}")
         for fpath in data_files:
             for record in self.convert_document(fpath):
-                return record
+                yield record
