@@ -25,3 +25,5 @@ spacy[lookups]
 sqlalchemy
 tqdm
 unidecode
+
+beautifulsoup4, black, elasticsearch, en-core-web-lg, flashtext, fuzzywuzzy[speedup], gensim, ipdb, jsonschema, jupyter, langdetect, lxml, matplotlib, mistune, mypy, mypy-extensions, networkx, nltk, numpy, opencv-contrib-python, pandas, Pillow, pylint, pymc3, pytesseract, pytest, requests, safety, scikit-learn, scipy, seaborn, soupsieve, spacy, spacy-lookups-data, SQLAlchemy, toml, tqdm, typing-extensions,

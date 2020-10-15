@@ -8,7 +8,6 @@ Optionally to be used as a context manager in cases where setup/teardown are
 required (if reading from a stream for example.
 """
 from abc import ABC, abstractmethod
-from contextlib import contextmanager
 from pathlib import Path
 from typing import NamedTuple, Iterable
 
@@ -30,15 +29,26 @@ class DatasetReader(ABC):
         """
         pass
 
-    @contextmanager
-    def document_set_reader(self) -> Iterable:
+    def __enter__(self) -> Iterable:
         """
         Provide a context manager for the data processing, in case where it
         teardown operations are desired (ie, when processing a stream).
 
         :return: The iterable for this class
         """
-        yield self.__iter__()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """
+        Required for the closing process of the context manager. Currently a
+        no-op process because closing of the files is handled in pathlib.Path
+
+        :param exc_type:
+        :param exc_val:
+        :param exc_tb:
+        :return: z
+        """
+        pass
 
     def __iter__(self) -> NamedTuple:
         """
