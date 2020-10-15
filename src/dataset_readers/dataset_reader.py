@@ -7,6 +7,7 @@ and potentially batched together for processing.
 Optionally to be used as a context manager in cases where setup/teardown are
 required (if reading from a stream for example.
 """
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import NamedTuple, Iterable
@@ -50,14 +51,17 @@ class DatasetReader(ABC):
         """
         pass
 
-    def __iter__(self) -> NamedTuple:
+    def __iter__(self) -> DatasetReader:
         """
         Load files containing data points read each record from the file,
         sending it to be processed.
 
         :return: A record transformed into the internal data representation
         """
+        return self
+
+    def __next__(self) -> NamedTuple:
         data_files = Path(self.document_location).rglob(f"*.{self.document_extension}")
         for fpath in data_files:
             for record in self.convert_document(fpath):
-                yield record
+                return record
