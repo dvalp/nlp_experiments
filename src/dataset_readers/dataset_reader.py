@@ -32,6 +32,12 @@ class DatasetReader(ABC):
         """
         pass
 
+    def data_iterator(self) -> NamedTuple:
+        data_files = Path(self.document_location).rglob(f"*.{self.document_extension}")
+        for fpath in data_files:
+            for record in self.convert_document(fpath):
+                yield record
+
     def __enter__(self) -> DatasetReader:
         """
         Provide a context manager for the data processing, in cases where
@@ -69,9 +75,3 @@ class DatasetReader(ABC):
         :return: One data point from the document set
         """
         return next(self.data_points)
-
-    def data_iterator(self) -> NamedTuple:
-        data_files = Path(self.document_location).rglob(f"*.{self.document_extension}")
-        for fpath in data_files:
-            for record in self.convert_document(fpath):
-                yield record
