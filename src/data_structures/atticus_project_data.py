@@ -3,16 +3,16 @@ from typing import NamedTuple
 
 
 class AtticusIndividualClause(NamedTuple):
-    file_path: str = ""
-    clause_text: str = ""
-    document_name: str = ""
-    parties: str = ""
-    agreement_date: datetime = None
-    effective_date: datetime = None
-    expiration_date: str = ""
-    renewal_term: str = ""
-    termination_term: str = ""
-    governing_law: str = ""
+    file_path: str = None
+    clause_text: str = None
+    document_name: str = None
+    parties: str = None
+    agreement_date: str = None
+    effective_date: str = None
+    expiration_date: str = None
+    renewal_term: str = None
+    termination_term: str = None
+    governing_law: str = None
     better_terms: bool = False
     non_compete: bool = False
     exclusivity: bool = False
