@@ -10,14 +10,16 @@ required (if reading from a stream for example.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from datetime import datetime
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 
 class DatasetReader(ABC):
-    def __init__(self, document_location: str, document_extension: str):
+    def __init__(self, document_location: str, document_extension: str, date_format: Optional[str] = None):
         self.document_location: str = document_location
         self.document_extension: str = document_extension
+        self.date_format: str = date_format
         self.data_points = self.data_iterator()
 
     @abstractmethod
@@ -33,31 +35,21 @@ class DatasetReader(ABC):
         pass
 
     def data_iterator(self) -> NamedTuple:
-        data_files = Path(self.document_location).glob(f"*.{self.document_extension}")
+        data_files = Path(self.document_location).rglob(f"*.{self.document_extension}")
         for fpath in data_files:
             for record in self.convert_document(fpath):
                 yield record
 
-    def __enter__(self) -> DatasetReader:
+    def partial_strptime(self, date_value: str) -> datetime:
         """
-        Provide a context manager for the data processing, in cases where
-        teardown operations are desired (ie, when processing a stream).
+        The datetime strptime() function can only take one argument in the
+        for converting data types. Here it is given default values for
+        formatting the date.
 
-        :return: The iterable for this class
+        :param date_value: String containing a date matching the given format.
+        :return: Transformed date value
         """
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
-        """
-        Required for the closing process of the context manager. Currently a
-        no-op process because closing of the files is handled in pathlib.Path
-
-        :param exc_type:
-        :param exc_val:
-        :param exc_tb:
-        :return: z
-        """
-        pass
+        return datetime.strptime(date_value, self.date_format)
 
     def __iter__(self) -> DatasetReader:
         """

@@ -5,7 +5,6 @@ https://fivethirtyeight.com/features/why-were-sharing-3-million-russian-troll-tw
 Inherits from the ABC DatasetReader.
 """
 import csv
-from datetime import datetime
 from pathlib import Path
 
 from data_structures.russian_tweet_data import RussianTweetData
@@ -16,9 +15,10 @@ class RussianTweetReader(DatasetReader):
     def __init__(
             self,
             document_location: str = "../data/russian-troll-tweets",
-            document_extension: str = "csv"
+            document_extension: str = "csv",
+            date_format: str = "%m/%d/%Y %H:%M",
     ):
-        super().__init__(document_location, document_extension)
+        super().__init__(document_location, document_extension, date_format)
 
     def convert_document(self, fp: Path) -> RussianTweetData:
         """
@@ -58,15 +58,3 @@ class RussianTweetReader(DatasetReader):
                 tweet_data[field] = action(tweet_data[field])
 
         return tweet_data
-
-    @staticmethod
-    def partial_strptime(date_value: str) -> datetime:
-        """
-        The datetime strptime() function can only take one argument in the
-        for converting data types. Here it is given default values for
-        formatting the date.
-
-        :param date_value: String containing a date matching the given format.
-        :return: Transformed date value
-        """
-        return datetime.strptime(date_value, "%m/%d/%Y %H:%M")
