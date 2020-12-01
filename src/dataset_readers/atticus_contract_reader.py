@@ -13,7 +13,7 @@ from dataset_readers.dataset_reader import DatasetReader
 class AtticusIndividualClauseReader(DatasetReader):
     def __init__(
             self,
-            document_location: str = "../../data/atticus-contracts/Final Publication/individual_contract_clauses",
+            document_location: str = "../data/atticus-contracts/Final Publication/individual_contract_clauses",
             document_extension: str = "csv",
             atticus_zip: str = "aok_beta.zip"
     ):
@@ -50,8 +50,9 @@ class AtticusIndividualClauseReader(DatasetReader):
         )
 
         for (action, fields) in actions:
-            for field in fields:
-                record[field] = action(record[field])
+            for key in record:
+                if key in fields:
+                    record[key] = action(record[key])
 
         return record
 
