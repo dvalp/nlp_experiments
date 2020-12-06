@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 ALL_MONTHS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 
-UITSPRAAK_DIR = Path("../data/uitspraak_documents")
+UITSPRAAK_DIR = Path("/Users/davidvalpey/practice/nlp_experiments/data/uitspraak_documents")
 XML_DIR = Path(UITSPRAAK_DIR, "xmls")
 ZIP_DIR = Path(UITSPRAAK_DIR, "zipfiles")
 PDF_DIR = Path(UITSPRAAK_DIR, "pdfs")
@@ -65,7 +65,7 @@ def extract_xml_files(year: str, month="all", min_size=5000, unlink=True) -> Non
     if month == "all":
         zip_paths = (ZIP_DIR / year).rglob("*.zip")
     else:
-        zip_paths = (ZIP_DIR / f'{year}/{year}{month}.zip')
+        zip_paths = [ZIP_DIR / f"{year}/{year}{month}.zip"]
 
     extract_month_zips(year=year, month=month)
 
