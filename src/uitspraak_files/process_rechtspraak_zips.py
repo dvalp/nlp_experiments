@@ -22,8 +22,7 @@ def download_uitspraak_zip(chunk_size=1024) -> None:
 
     with open(ZIP_FILE, 'wb') as fd:
         with tqdm(total=file_size, unit="B", unit_scale=True) as pbar:
-            for chunk in tqdm(r.iter_content(chunk_size=chunk_size),
-                              total=file_size, unit="B", unit_scale=True):
+            for chunk in r.iter_content(chunk_size=chunk_size):
                 fd.write(chunk)
                 pbar.update(chunk_size)
 
@@ -81,9 +80,30 @@ def extract_xml_files(year: str, month="all", min_size=5000, unlink=True) -> Non
             fname.unlink()
 
 
-def download_pdfs():
-    # TODO: Make this happen
-    pass
+def download_pdf(pdf_name: str):
+    PDF_DIR.mkdir(parents=True, exist_ok=True)
+    url = f'https://uitspraken.rechtspraak.nl/InzienDocument/GetPdf?ecli={pdf_name}'
+    r = requests.get(url, stream=True)
+    file_size = int(requests.head(url).headers["Content-Length"])
+    save_file = (PDF_DIR / pdf_name).with_suffix(".pdf")
+    chunk_size = 1024
+
+    with open(save_file, 'wb') as fd:
+        with tqdm(total=file_size, unit="B", unit_scale=True, desc=pdf_name) as pbar:
+            for chunk in r.iter_content(chunk_size=chunk_size):
+                fd.write(chunk)
+                pbar.update(chunk_size)
+
+
+def update_pdf_dir():
+    xml_names = {fname.stem for fname in XML_DIR.rglob("*.xml")}
+    pdf_names = {fname.stem for fname in PDF_DIR.rglob("*.pdf")}
+
+    for pdf_stem in pdf_names - xml_names:
+        Path(PDF_DIR, pdf_stem).with_suffix('.pdf').unlink(missing_ok=True)
+
+    for pdf_stem in xml_names - pdf_names:
+        download_pdf(pdf_stem)
 
 
 if __name__ == '__main__':
