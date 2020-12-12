@@ -15,7 +15,13 @@ ZIP_FILE = Path(ZIP_DIR, 'OpenDataUitspraken.zip')
 PARSED_FILE = Path(UITSPRAAK_DIR, "parsed_xmls.pkl")
 
 
-def download_uitspraak_zip(chunk_size=1024) -> None:
+def download_uitspraak_zip(chunk_size: int = 1024) -> None:
+    """
+    Download the master zip file of all the XML documents for cases. This file
+    contains zip files for each month. These files are the ones unpacked below.
+
+    :param chunk_size: size of the download chunks
+    """
     url = "http://static.rechtspraak.nl/PI/OpenDataUitspraken.zip"
     r = requests.get(url, stream=True)
     file_size = int(requests.head(url).headers["Content-Length"])
@@ -27,7 +33,17 @@ def download_uitspraak_zip(chunk_size=1024) -> None:
                 pbar.update(len(chunk))
 
 
-def extract_month_zips(year: str, month: str, refetch=False) -> None:
+def extract_month_zips(year: str, month: str, refetch: bool = False) -> None:
+    """
+    The main zip file contains a zip file for each month of each year. These
+    are extracted so the XML files can be extracted.
+
+    Zip files to be extracted can be chosen by month and year.
+
+    :param year: Year to extract
+    :param month: Month to extract
+    :param refetch: Force extraction if files exist
+    """
     year = str(year)
     month = str(month).zfill(2)
 
@@ -57,7 +73,17 @@ def extract_month_zips(year: str, month: str, refetch=False) -> None:
             z.extractall(path=ZIP_DIR, members=files_list)
 
 
-def extract_xml_files(year: str, month="all", min_size=5000, unlink=True) -> None:
+def extract_xml_files(year: str, month="all", min_size=5000, unlink: bool = True) -> None:
+    """
+    Extract all XML files for the given year and month. Can also be limited by
+    file size. Past experience shows that files below a certain size have no
+    useful information.
+
+    :param year: Year to extract
+    :param month: Month to extract
+    :param min_size: Minimum file size to extract
+    :param unlink: Remove the zip files when finished extraction
+    """
     year = str(year)
     month = str(month).zfill(2)
 
@@ -80,12 +106,18 @@ def extract_xml_files(year: str, month="all", min_size=5000, unlink=True) -> Non
             fname.unlink()
 
 
-def download_pdf(pdf_name: str):
+def download_pdf(file_id: str) -> None:
+    """
+    Download a single rechtspraak PDF. It expected to be run in a batch, but
+    can also be used individually.
+
+    :param pdf_name: ID of the case PDF to download
+    """
     PDF_DIR.mkdir(parents=True, exist_ok=True)
-    url = f'https://uitspraken.rechtspraak.nl/InzienDocument/GetPdf?ecli={pdf_name}'
+    url = f'https://uitspraken.rechtspraak.nl/InzienDocument/GetPdf?ecli={file_id}'
     r = requests.get(url, stream=True)
     file_size = int(requests.head(url).headers["Content-Length"])
-    save_file = (PDF_DIR / pdf_name).with_suffix(".pdf")
+    save_file = (PDF_DIR / file_id).with_suffix(".pdf")
 
     with open(save_file, 'wb') as fd:
         with tqdm(total=file_size, unit="B", unit_scale=True, desc=pdf_name) as pbar:
@@ -94,7 +126,10 @@ def download_pdf(pdf_name: str):
                 pbar.update(len(chunk))
 
 
-def update_pdf_dir():
+def update_pdf_dir() -> None:
+    """
+    Check for missing PDFs and for PDFs that no longer have a matching XML.
+    """
     xml_names = {fname.stem for fname in XML_DIR.rglob("*.xml")}
     pdf_names = {fname.stem for fname in PDF_DIR.rglob("*.pdf")}
 
