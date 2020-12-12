@@ -24,7 +24,7 @@ def download_uitspraak_zip(chunk_size=1024) -> None:
         with tqdm(total=file_size, unit="B", unit_scale=True) as pbar:
             for chunk in r.iter_content(chunk_size=chunk_size):
                 fd.write(chunk)
-                pbar.update(chunk_size)
+                pbar.update(len(chunk))
 
 
 def extract_month_zips(year: str, month: str, refetch=False) -> None:
@@ -86,13 +86,12 @@ def download_pdf(pdf_name: str):
     r = requests.get(url, stream=True)
     file_size = int(requests.head(url).headers["Content-Length"])
     save_file = (PDF_DIR / pdf_name).with_suffix(".pdf")
-    chunk_size = 1024
 
     with open(save_file, 'wb') as fd:
         with tqdm(total=file_size, unit="B", unit_scale=True, desc=pdf_name) as pbar:
-            for chunk in r.iter_content(chunk_size=chunk_size):
+            for chunk in r.iter_content(chunk_size=1024):
                 fd.write(chunk)
-                pbar.update(chunk_size)
+                pbar.update(len(chunk))
 
 
 def update_pdf_dir():
