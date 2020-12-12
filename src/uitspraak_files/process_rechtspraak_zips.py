@@ -156,5 +156,7 @@ if __name__ == '__main__':
 
     if args.download_only:
         download_uitspraak_zip()
+    elif args.download_pdfs():
+        update_pdf_dir()
     else:
         extract_xml_files(year=args.year, month=args.month)
