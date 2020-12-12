@@ -111,7 +111,7 @@ def download_pdf(file_id: str) -> None:
     Download a single rechtspraak PDF. It expected to be run in a batch, but
     can also be used individually.
 
-    :param pdf_name: ID of the case PDF to download
+    :param file_id: ID of the case PDF to download
     """
     PDF_DIR.mkdir(parents=True, exist_ok=True)
     url = f'https://uitspraken.rechtspraak.nl/InzienDocument/GetPdf?ecli={file_id}'
@@ -120,7 +120,7 @@ def download_pdf(file_id: str) -> None:
     save_file = (PDF_DIR / file_id).with_suffix(".pdf")
 
     with open(save_file, 'wb') as fd:
-        with tqdm(total=file_size, unit="B", unit_scale=True, desc=pdf_name) as pbar:
+        with tqdm(total=file_size, unit="B", unit_scale=True, desc=file_id) as pbar:
             for chunk in r.iter_content(chunk_size=1024):
                 fd.write(chunk)
                 pbar.update(len(chunk))
