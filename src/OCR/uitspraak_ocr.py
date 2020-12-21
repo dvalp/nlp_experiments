@@ -14,6 +14,6 @@ def ocr_document(pdf_path: Path) -> list[str]:
     :param pdf_path: Path to the PDF being converted
     :return: List of strings, with a string for each page.
     """
-    images = pdf2image.convert_from_path(pdf_path)
+    images = pdf2image.convert_from_path(pdf_path, dpi=300, fmt="png", thread_count=6, use_pdftocairo=True)
     texts = [pytesseract.image_to_string(image, lang="nld") for image in images]
     return texts
