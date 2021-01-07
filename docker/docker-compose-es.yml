@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+  master:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    container_name: master01
+    environment:
+      - cluster.name=elastic-cluster
+      - node.name=master01
+      - node.master=true
+      - node.data=false
+      - node.ingest=false
+      - cluster.initial_master_nodes=master01,master02,master-voting
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - discovery.seed_hosts=master02,master-voting
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=$CERTS_DIR/kibana.das.local.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca_sha2.das.local.cer
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/kibana.das.local.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca_sha2.das.local.cer
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/kibana.das.local.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/kibana.das.local.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - mv01:/usr/share/elasticsearch/data
+      - certs:$CERTS_DIR
+    ports:
+      - 9200:9200
+    networks:
+      - elastic-overlay
+
+  data:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    container_name: data01
+    environment:
+      - cluster.name=elastic-cluster
+      - node.name=data01
+      - discovery.seed_hosts=master01,master02,master-voting
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - node.master=false
+      - node.data=true
+      - node.ingest=true
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=$CERTS_DIR/kibana.das.local.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca_sha2.das.local.cer
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/kibana.das.local.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca_sha2.das.local.cer
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/kibana.das.local.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/kibana.das.local.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - dv01:/usr/share/elasticsearch/data
+      - certs:$CERTS_DIR
+    networks:
+      - elastic-overlay
+
+  volumes:
+    mv01:
+      driver: local
+    dv01:
+      driver: local
+    certs:
+      driver: local
+
+  networks:
+    elastic-overlay:
+      external: true
+      driver: overlay
