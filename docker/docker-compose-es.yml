@@ -3,7 +3,6 @@ version: '3.9'
 services:
   master:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-    container_name: master01
     environment:
       - cluster.name=elastic-cluster
       - node.name=master01
@@ -29,17 +28,15 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - mv01:/usr/share/elasticsearch/data
-      - certs:$CERTS_DIR
     ports:
       - 9200:9200
-    networks:
-      - elastic-overlay
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
 
   data:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-    container_name: data01
     environment:
       - cluster.name=elastic-cluster
       - node.name=data01
@@ -64,21 +61,9 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - dv01:/usr/share/elasticsearch/data
-      - certs:$CERTS_DIR
-    networks:
-      - elastic-overlay
-
-  volumes:
-    mv01:
-      driver: local
-    dv01:
-      driver: local
-    certs:
-      driver: local
-
-  networks:
-    elastic-overlay:
-      external: true
-      driver: overlay
+    deploy:
+      mode: global
+      endpoint_mode: vip
+      resources:
+        reservations:
+          memory: 8G
