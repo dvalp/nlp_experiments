@@ -7,6 +7,7 @@ fuzzywuzzy
 gensim
 ipdb
 ipython
+joblib
 langdetect
 lxml
 mypy
