@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Iterable, Union, Optional
 
+import joblib
 import pandas as pd
-from sklearn.externals import joblib
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -219,9 +219,9 @@ def gs_multinb_count(input_column: Iterable[str], labels: Iterable[Union[int, st
     return grd
 
 # if __name__ == '__main__':
-    # from unused_scripts.text_preparation import create_analysis_df
-    # df_legal = create_analysis_df(["ExampleSentences_LegalSystem", "TobeClassified_LegalSystem"], "LegalSystem")
-    # df_legal_nl = df_legal[df_legal['Taal'] == 'nl']
-    # grids_legal = run_batch_gridsearch(df_legal_nl['Filtered_Words'], df_legal_nl['Type_nederlands recht'])
-    # pipe = make_classifier_pipeline(df_legal_nl['Filtered_Words'], df_legal_nl['Type_nederlands recht'],
-    #                                 "LegalSystem_NL")
+#     from unused_scripts.text_preparation import create_analysis_df
+#     df_legal = create_analysis_df(["ExampleSentences_LegalSystem", "TobeClassified_LegalSystem"], "LegalSystem")
+#     df_legal_nl = df_legal[df_legal['Taal'] == 'nl']
+#     grids_legal = run_batch_gridsearch(df_legal_nl['Filtered_Words'], df_legal_nl['Type_nederlands recht'])
+#     pipe = make_classifier_pipeline(df_legal_nl['Filtered_Words'], df_legal_nl['Type_nederlands recht'],
+#                                     "LegalSystem_NL")
