@@ -8,7 +8,7 @@ from uitspraak_files.extract_from_xmls import parse_xmls
 
 
 def xml_docs() -> Generator[str, None, None]:
-    docs = list(parse_xmls("data/sample_dataset/xmls/"))
+    docs = parse_xmls()
     letters = set(ascii_letters)
 
     for doc in docs:

@@ -1,5 +1,5 @@
 """
-Extract text and metadata from xml downloaded from rechspraak.nl
+Extract text and metadata from xml downloaded from rechtspraak.nl
 
 Elements are extracted and added to the document metadata. This can also be
 run as a batch, in which case it returns a generator for iterating through
@@ -10,6 +10,7 @@ TODO: The recursive function that makes a dictionary does not handle duplicate
 """
 from collections import defaultdict
 from itertools import chain
+from pathlib import Path
 from typing import Dict, Any, Iterator
 
 from lxml import etree
@@ -18,7 +19,7 @@ from uitspraak_files.process_rechtspraak_zips import XML_DIR
 from vector_models.fasttext_model import vectorize_text, load_model, VECTOR_SIZE
 
 
-def parse_xmls() -> Iterator[Dict[str, Any]]:
+def parse_xmls(xml_dir: Path = XML_DIR) -> Iterator[Dict[str, Any]]:
     """
     The main work of extracting information from an xml is done here. Improving
     access to the metadata by fields would help a lot.
@@ -27,12 +28,12 @@ def parse_xmls() -> Iterator[Dict[str, Any]]:
     """
     try:
         vector_model = load_model()
-    except FileNotFoundError as fnf:
+    except FileNotFoundError:
         vector_model = None
         print("No model was loaded because it could not be found, word vectors will be set to zeroes. "
               "This is necessary if training a model for the first time.")
 
-    for fname in XML_DIR.rglob('*.xml'):
+    for fname in xml_dir.rglob('*.xml'):
         root = etree.parse(str(fname)).getroot()
         datafields = root.find(".//{*}RDF").getchildren()
 
