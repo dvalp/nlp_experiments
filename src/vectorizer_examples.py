@@ -41,7 +41,8 @@ def tfidf_standard():
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
     print(X_train_tfidf.shape)
 
-    clf = MultinomialNB().fit(X_train_tfidf, y_train)
+    clf = MultinomialNB()
+    clf.fit(X_train_tfidf, y_train)
     X_test_counts = count_vect.transform(X_test)
     X_test_tfidf = tfidf_transformer.transform(X_test_counts)
     predicted = clf.predict(X_test_tfidf)
