@@ -1,12 +1,14 @@
 from string import ascii_letters
 from typing import Collection, Generator
 
-import nl_core_news_sm
+import nl_core_news_md
 from spacy.tokens.doc import Doc
+
+from uitspraak_files.extract_from_xmls import parse_xmls
 
 
 def xml_docs() -> Generator[str, None, None]:
-    docs = list(read_xmls("data/sample_dataset/xmls/"))
+    docs = list(parse_xmls("data/sample_dataset/xmls/"))
     letters = set(ascii_letters)
 
     for doc in docs:
@@ -20,6 +22,6 @@ def xml_docs() -> Generator[str, None, None]:
 
 
 def create_spacy_objects(texts: Collection[str]) -> Generator[Doc, None, None]:
-    nlp = nl_core_news_sm.load()
+    nlp = nl_core_news_md.load()
     for text in texts:
         yield nlp(text)
