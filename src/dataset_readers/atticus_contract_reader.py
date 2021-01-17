@@ -9,11 +9,15 @@ import requests
 from data_structures.atticus_project_data import label_mappings, AtticusIndividualClause
 from dataset_readers.dataset_reader import DatasetReader
 
+ATTICUS_FILES = Path("/Users/davidvalpey/practice/nlp_experiments/data/atticus-contracts/Final Publication")
+CLAUSE_FILES = Path(ATTICUS_FILES, "individual_contract_clauses")
+FULL_CONTRACTS = Path(ATTICUS_FILES, "full_contracts")
+
 
 class AtticusIndividualClauseReader(DatasetReader):
     def __init__(
             self,
-            document_location: str = "../data/atticus-contracts/Final Publication/individual_contract_clauses",
+            document_location: str = CLAUSE_FILES,
             document_extension: str = "csv",
             atticus_zip: str = "aok_beta.zip"
     ):
@@ -57,11 +61,11 @@ class AtticusIndividualClauseReader(DatasetReader):
         return record
 
     def download_datafile(self):
-        dl_path = "https://zenodo.org/record/4064880/files/aok_beta.zip?download=1"
+        dl_url = "https://zenodo.org/record/4064880/files/aok_beta.zip?download=1"
         file_path = Path(self.document_location, self.atticus_zip)
         Path(self.document_location).mkdir(exist_ok=True, parents=True)
 
-        with requests.get(dl_path, stream=True) as r:
+        with requests.get(dl_url, stream=True) as r:
             Path(file_path).write_bytes(r.content)
 
     def extract_datafile(self):
@@ -74,6 +78,10 @@ class AtticusIndividualClauseReader(DatasetReader):
 
 def convert_bool(value):
     return True if value.lower() == "yes" else False
+
+
+def read_pdfs():
+    pass
 
 
 if __name__ == '__main__':
