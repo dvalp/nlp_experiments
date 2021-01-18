@@ -3,7 +3,7 @@ from typing import NamedTuple
 
 class AtticusFullContracts(NamedTuple):
     filename: str
-    filename_hash: str
+    filename_stem: str
     text: str
 
 

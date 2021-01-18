@@ -87,7 +87,7 @@ def read_pdfs():
         with pdfplumber.open(fname) as pdf:
             doc = AtticusFullContracts(
                 filename=str(fname),
-                filename_hash="",
+                filename_stem=fname.stem,
                 text="\n".join(page.extract_text() for page in pdf.pages)
             )
             yield doc
