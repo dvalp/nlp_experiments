@@ -1,6 +1,12 @@
 from typing import NamedTuple
 
 
+class AtticusFullContracts(NamedTuple):
+    filename: str
+    filename_hash: str
+    text: str
+
+
 class AtticusIndividualClause(NamedTuple):
     file_path: str = None
     clause_text: str = None

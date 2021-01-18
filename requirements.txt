@@ -16,6 +16,7 @@ numpy
 opencv-contrib-python
 pandas
 pdf2image
+pdfplumber
 pylint
 pymc3
 pytesseract

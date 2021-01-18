@@ -7,7 +7,7 @@ from zipfile import ZipFile
 import pdfplumber
 import requests
 
-from data_structures.atticus_project_data import label_mappings, AtticusIndividualClause
+from data_structures.atticus_project_data import label_mappings, AtticusIndividualClause, AtticusFullContracts
 from dataset_readers.dataset_reader import DatasetReader
 
 ATTICUS_FILES = Path("/Users/davidvalpey/practice/nlp_experiments/data/atticus-contracts/Final Publication")
@@ -85,7 +85,12 @@ def read_pdfs():
     pdf_paths = FULL_CONTRACTS.rglob("*.pdf")
     for fname in pdf_paths:
         with pdfplumber.open(fname) as pdf:
-            yield "\n".join(page.extract_text() for page in pdf.pages)
+            doc = AtticusFullContracts(
+                filename=str(fname),
+                filename_hash="",
+                text="\n".join(page.extract_text() for page in pdf.pages)
+            )
+            yield doc
 
 
 if __name__ == '__main__':
