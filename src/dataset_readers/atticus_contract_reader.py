@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import NamedTuple
 from zipfile import ZipFile
 
+import pdfplumber
 import requests
 
 from data_structures.atticus_project_data import label_mappings, AtticusIndividualClause
@@ -81,7 +82,10 @@ def convert_bool(value):
 
 
 def read_pdfs():
-    pass
+    pdf_paths = FULL_CONTRACTS.rglob("*.pdf")
+    for fname in pdf_paths:
+        with pdfplumber.open(fname) as pdf:
+            yield "\n".join(page.extract_text() for page in pdf.pages)
 
 
 if __name__ == '__main__':
