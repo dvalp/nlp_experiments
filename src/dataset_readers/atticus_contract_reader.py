@@ -85,12 +85,11 @@ def read_pdfs():
     pdf_paths = FULL_CONTRACTS.rglob("*.pdf")
     for fname in pdf_paths:
         with pdfplumber.open(fname) as pdf:
-            doc = AtticusFullContracts(
+            yield AtticusFullContracts(
                 filename=str(fname),
                 filename_stem=fname.stem,
                 text="\n".join(page.extract_text() for page in pdf.pages)
             )
-            yield doc
 
 
 if __name__ == '__main__':
