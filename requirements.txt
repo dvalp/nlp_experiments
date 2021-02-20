@@ -18,13 +18,12 @@ pandas
 pdf2image
 pdfplumber
 pylint
-pymc3
 pytesseract
 pytest
 requests
 safety
 scikit-learn
-spacy[lookups]
+spacy
 sqlalchemy
 tqdm
 unidecode
