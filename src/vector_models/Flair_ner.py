@@ -1,5 +1,3 @@
-import gzip
-
 from flair.data import Sentence
 from flair.models import SequenceTagger
 from transformers import pipeline
@@ -25,5 +23,3 @@ def add_ner_predictions():
 if __name__ == '__main__':
     sents = list(add_ner_predictions())
     print(sents)
-    with gzip.open("ner_predictions.gz", "wb") as zf:
-        zf.writelines(sents)

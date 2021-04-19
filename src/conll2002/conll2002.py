@@ -1,6 +1,5 @@
 import gzip
 from collections import namedtuple
-from typing import Union, Collection, Any, Dict
 
 NamedEntity = namedtuple("NamedEntity", "entity, etype")
 Token = namedtuple("Token", "text, pos, ner")
