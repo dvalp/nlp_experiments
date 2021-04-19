@@ -48,4 +48,4 @@ def prep_sentences(max_items=10) -> dict:
 
 
 if __name__ == '__main__':
-    list(prep_sentences(max_items=100))
+    print(list(prep_sentences(max_items=100)))
