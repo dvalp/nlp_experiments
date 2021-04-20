@@ -22,14 +22,16 @@ def add_ner_predictions():
         yield sent
 
 
-def evaluate_flair():
+def compare_predictions():
     for sent in prep_sentences():
         sentence = Sentence(sent["sentence"])
         flair_tagger.predict(sentence)
         flair_names = Counter(f"{span.text} {span.tag}" for span in sentence.get_spans("ner"))
         valid_names = Counter(f"{span.entity} {span.etype}" for span in sent["entities"])
+        hf_names = Counter(f"{span['word']} {span['entity'][2:].upper()}" for span in hf_tagger(sent["sentence"]))
         print("Good names:", valid_names)
         print("Pred names:", flair_names)
+        print("HF names   :", hf_names)
 
 
 if __name__ == '__main__':
