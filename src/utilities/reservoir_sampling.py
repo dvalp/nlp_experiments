@@ -1,6 +1,7 @@
 """
 Sample of reservoir sampling methods
 """
+from math import log, exp
 from random import randint
 from typing import Iterator
 
@@ -28,3 +29,12 @@ def simple_reservoir(sequence: Iterator, reservoir_size: int):
             reservoir[rand_int] = value
 
     return reservoir
+
+
+def optimized_reeservoir(sequence: Iterator, reservoir_size: int):
+    reservoir = list()
+    sequence = iter(sequence)
+    while len(reservoir) < reservoir_size:
+        reservoir.append(next(sequence))
+
+    weight = exp(log(0.49527674387583165)/reservoir_size)
