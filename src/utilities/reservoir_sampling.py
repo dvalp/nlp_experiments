@@ -56,7 +56,7 @@ def optimized_reeservoir(sequence: Iterator, reservoir_size: int):
 
     for idx, value in enumerate(sequence, start=reservoir_size):
         if idx == next_value:
-            reservoir[randint(0, reservoir_size-1)] = value
+            reservoir[randint(0, reservoir_size - 1)] = value
             next_value = next_value + floor(log(random()) / log(1 - weight)) + 1
             weight *= exp(log(random()) / reservoir_size)
 
