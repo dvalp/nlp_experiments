@@ -85,6 +85,16 @@ services:
     depends_on:
       - elastic
 
+  mq:
+    image: webcenter/activemq
+    environment:
+      - ACTIVEMQ_OPTS=-Dlog4j2.formatMsgNoLookups=true
+    ports:
+      - "18161:8161"
+      - "5672:5672"
+    volumes:
+      - ./activemq/activemq.xml:/opt/activemq/conf/activemq.xml
+
 volumes:
   mongodata:
     driver: local
