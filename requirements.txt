@@ -8,6 +8,7 @@ gensim
 ipdb
 ipython
 joblib
+json_lines
 langdetect
 lxml
 mypy
@@ -25,5 +26,6 @@ safety
 scikit-learn
 spacy
 sqlalchemy
+transformers
 tqdm
 unidecode

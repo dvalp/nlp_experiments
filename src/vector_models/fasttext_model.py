@@ -16,7 +16,7 @@ MODEL_PATH = "vector_models/fast_text_vectors/fast_text.mod"
 
 
 def train_model(sentences: Collection[str], save_path=MODEL_PATH):
-    model = FastText(size=VECTOR_SIZE)
+    model = FastText(vector_size=VECTOR_SIZE)
     model.build_vocab(sentences=sentences)
     model.train(sentences=sentences, total_examples=model.corpus_count, epochs=50)
     model.save(save_path)
