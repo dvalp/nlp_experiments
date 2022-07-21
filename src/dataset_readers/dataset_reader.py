@@ -5,7 +5,7 @@ Designed to be used as an iterator so that individual records can be collected
 and potentially batched together for processing.
 
 Optionally to be used as a context manager in cases where setup/teardown are
-required (if reading from a stream for example.
+required (if reading from a stream for example).
 """
 from __future__ import annotations
 

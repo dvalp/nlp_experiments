@@ -21,7 +21,7 @@ from vector_models.fasttext_model import vectorize_text, load_model, VECTOR_SIZE
 
 def parse_xmls(xml_dir: Path = XML_DIR) -> Iterator[Dict[str, Any]]:
     """
-    The main work of extracting information from an xml is done here. Improving
+    The main work of extracting information from xml is done here. Improving
     access to the metadata by fields would help a lot.
 
     :return: Dict of data from an XML file

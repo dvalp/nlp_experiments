@@ -76,7 +76,7 @@ def extract_month_zips(year: str, month: str, refetch: bool = False) -> None:
 def extract_xml_files(year: str, month="all", min_size=5000, unlink: bool = True) -> None:
     """
     Extract all XML files for the given year and month. Can also be limited by
-    file size. Past experience shows that files below a certain size have no
+    file size. Experience shows that files below a certain size have no
     useful information.
 
     :param year: Year to extract

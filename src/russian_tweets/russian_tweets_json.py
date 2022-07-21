@@ -21,8 +21,8 @@ def build_tweet_df(filter_language: str = 'English', convert_dates: bool = True)
     but are marked as unknown languages.
 
     Setting column types stops Pandas from guessing; guessing causes problems
-    when combining some of the data sets. Converting to categoricals and dates
-    makes the data more useful in some contexts.
+    when combining some data sets. Converting to categorical and date makes
+    the data more useful in some contexts.
 
     Datetime fields are not storable in JSON, set convert_dates to False if
     you intend to make JSON files from this dataset using the function
@@ -76,7 +76,7 @@ def make_json_samples(df: pd.DataFrame, sample_size: int = 20) -> None:
     necessary for creating some sample documents for testing some code to
     read json files into a database.
 
-    Note that the URLs are artificially moved into a sub group for testing
+    Note that the URLs are artificially moved into a subgroup for testing
     the code with nested JSON.
 
     Warning: Some tweet IDs are duplicated, it is possible that conflicts

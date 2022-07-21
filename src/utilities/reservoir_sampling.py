@@ -9,7 +9,7 @@ from typing import Iterator
 
 def simple_reservoir(sequence: Iterator, reservoir_size: int):
     """
-    Naive version simply visits every number and generates a random indeex at
+    Naive version simply visits every number and generates a random index at
     each step.
 
     More efficient methods are possible. Modification may be necessary to read
@@ -32,10 +32,10 @@ def simple_reservoir(sequence: Iterator, reservoir_size: int):
     return reservoir
 
 
-def optimized_reeservoir(sequence: Iterator, reservoir_size: int):
+def optimized_reservoir(sequence: Iterator, reservoir_size: int):
     """
     Optimized version visits every number but only stops at the next number
-    calculated randomly, using a decreasing weight. Thus at each round the next
+    calculated randomly, using a decreasing weight. Thus, at each round the next
     number is farther away, but at a random interval.
 
     Modification may be necessary to read from actual streams.
