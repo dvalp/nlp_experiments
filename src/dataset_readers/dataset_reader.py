@@ -66,4 +66,4 @@ class DatasetReader(ABC):
 
         :return: One data point from the document set
         """
-        return next(self.data_points)
+        yield from self.data_points
