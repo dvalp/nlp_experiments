@@ -1,5 +1,6 @@
 beautifulsoup4
 black
+cryptography
 elasticsearch
 flashtext
 ftfy
@@ -18,14 +19,18 @@ opencv-contrib-python
 pandas
 pdf2image
 pdfplumber
+Pillow
 pylint
 pytesseract
 pytest
+rapidfuzz
 requests
+ruff
 safety
 scikit-learn
 spacy
 sqlalchemy
+tokenizers
 transformers
 tqdm
 unidecode
