@@ -111,6 +111,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
 .DS_Store
 data/
 src/kernel-AMD_Radeon_Pro_450_Compute_Engine.bin
@@ -118,4 +119,5 @@ src/kernel-Intel(R)_Core(TM)_i7-6700HQ_CPU_@_2.60GHz.bin
 src/kernel-Intel(R)_HD_Graphics_530.bin
 src/tesseract_opencl_profile_devices.dat
 
-/db_config.json
+db_config.json
+/src/vector_models/*

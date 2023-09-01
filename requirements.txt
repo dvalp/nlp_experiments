@@ -1,3 +1,4 @@
+Pillow
 beautifulsoup4
 black
 cryptography
@@ -19,7 +20,6 @@ opencv-contrib-python
 pandas
 pdf2image
 pdfplumber
-Pillow
 pylint
 pytesseract
 pytest
@@ -31,6 +31,6 @@ scikit-learn
 spacy
 sqlalchemy
 tokenizers
-transformers
 tqdm
+transformers
 unidecode
