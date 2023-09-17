@@ -4,7 +4,7 @@ from typing import Collection, Generator
 import nl_core_news_md
 from spacy.tokens.doc import Doc
 
-from uitspraak_files.extract_from_xmls import parse_xmls
+from src.uitspraak_files.extract_from_xmls import parse_xmls
 
 
 def xml_docs() -> Generator[str, None, None]:

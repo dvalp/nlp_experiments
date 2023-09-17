@@ -8,10 +8,12 @@ ftfy
 gensim
 ipdb
 ipython
+ipywidgets
 joblib
 json_lines
 langdetect
 lxml
+matplotlib
 mypy
 nltk
 numpy

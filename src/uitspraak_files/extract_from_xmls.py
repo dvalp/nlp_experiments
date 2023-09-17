@@ -15,8 +15,8 @@ from typing import Dict, Any, Iterator
 
 from lxml import etree
 
-from uitspraak_files.process_rechtspraak_zips import XML_DIR
-from vector_models.fasttext_model import vectorize_text, load_model, VECTOR_SIZE
+from src.uitspraak_files.process_rechtspraak_zips import XML_DIR
+from src.vector_models.fasttext_model import vectorize_text, load_model, VECTOR_SIZE
 
 
 def parse_xmls(xml_dir: Path = XML_DIR) -> Iterator[Dict[str, Any]]:

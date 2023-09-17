@@ -1,8 +1,8 @@
 from itertools import chain
 from typing import Iterator
 
-from uitspraak_files.extract_from_xmls import parse_xmls
-from vector_models.fasttext_model import create_training_sentences, train_model
+from src.uitspraak_files.extract_from_xmls import parse_xmls
+from src.vector_models.fasttext_model import create_training_sentences, train_model
 
 
 def joined_texts() -> Iterator[str]:
