@@ -5,7 +5,6 @@ cryptography
 elasticsearch
 flashtext
 ftfy
-fuzzywuzzy
 gensim
 ipdb
 ipython
@@ -30,6 +29,7 @@ safety
 scikit-learn
 spacy
 sqlalchemy
+thefuzz
 tokenizers
 tqdm
 transformers
