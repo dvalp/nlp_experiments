@@ -11,6 +11,7 @@ ipython
 ipywidgets
 joblib
 json_lines
+jupyter
 langdetect
 lxml
 matplotlib
