@@ -8,7 +8,7 @@ from gensim.summarization.textcleaner import get_sentences
 from gensim.utils import simple_preprocess
 from tqdm import tqdm
 
-from elastic.elasticsearch_connection import INDEX_NAME, ES_CONTEXT
+from src.elastic.elasticsearch_connection import INDEX_NAME, ES_CONTEXT
 
 VECTOR_SIZE = 100
 

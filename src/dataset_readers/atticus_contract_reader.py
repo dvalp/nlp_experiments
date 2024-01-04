@@ -7,8 +7,8 @@ from zipfile import ZipFile
 import pdfplumber
 import requests
 
-from data_structures.atticus_project_data import label_mappings, AtticusFullContracts, AtticusIndividualClause
-from dataset_readers.dataset_reader import DatasetReader
+from src.data_structures.atticus_project_data import label_mappings, AtticusFullContracts, AtticusIndividualClause
+from src.dataset_readers.dataset_reader import DatasetReader
 
 ATTICUS_FILES = Path("/Users/davidvalpey/practice/nlp_experiments/data/atticus-contracts/Final Publication")
 CLAUSE_FILES = Path(ATTICUS_FILES, "individual_contract_clauses")

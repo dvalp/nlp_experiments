@@ -3,7 +3,7 @@ from collections import namedtuple
 
 NamedEntity = namedtuple("NamedEntity", "entity, etype")
 Token = namedtuple("Token", "text, pos, ner")
-FILENAME = "/Users/davidvalpey/practice/nlp_experiments/data/conll2002/ned.testb.gz"
+FILENAME = "data/conll2002/ned.testb.gz"
 
 
 def parse_conll2002(max_items=10) -> Token:
