@@ -13,6 +13,7 @@ joblib
 json_lines
 jupyter
 langdetect
+line_profiler
 lxml
 matplotlib
 mypy
@@ -28,7 +29,6 @@ pytest
 rapidfuzz
 requests
 ruff
-safety
 scikit-learn
 spacy
 sqlalchemy

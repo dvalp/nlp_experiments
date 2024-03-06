@@ -1,7 +1,7 @@
 from typing import Collection, Dict, List, Tuple
 
 from flashtext import KeywordProcessor
-from fuzzywuzzy.process import extractWithoutOrder
+from thefuzz.process import extractWithoutOrder
 from sklearn.feature_extraction.text import CountVectorizer
 
 

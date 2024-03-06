@@ -3,7 +3,7 @@ from typing import NamedTuple
 
 import json_lines
 
-from dataset_readers.dataset_reader import DatasetReader
+from src.dataset_readers.dataset_reader import DatasetReader
 
 
 class AmazonReviewReader(DatasetReader):

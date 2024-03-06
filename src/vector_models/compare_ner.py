@@ -5,7 +5,7 @@ from flair.data import Sentence
 from flair.models import SequenceTagger
 from transformers import pipeline
 
-from conll2002.conll2002 import prep_sentences
+from src.conll2002.conll2002 import prep_sentences
 
 hf_tagger = pipeline("ner", model="wietsedv/bert-base-dutch-cased-finetuned-conll2002-ner")
 flair_tagger = SequenceTagger.load("flair/ner-dutch-large")

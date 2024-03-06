@@ -7,8 +7,8 @@ Inherits from the ABC DatasetReader.
 import csv
 from pathlib import Path
 
-from data_structures.russian_tweet_data import RussianTweetData
-from dataset_readers.dataset_reader import DatasetReader
+from src.data_structures.russian_tweet_data import RussianTweetData
+from src.dataset_readers.dataset_reader import DatasetReader
 
 
 class RussianTweetReader(DatasetReader):

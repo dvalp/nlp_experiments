@@ -27,10 +27,10 @@ class RussianTweetData(NamedTuple):
     tco3_step1: str
     id: int = None
 
-    def __eq__(self, other):
+    def __eq__(self, other: NamedTuple) -> bool:
         ignore_fields = {"id"}
         return all((value == other.__dict__[key]) for key, value in self.__dict__.items()
                    if key not in ignore_fields)
 
-    def __ne__(self, other):
+    def __ne__(self, other: NamedTuple) -> bool:
         return not self.__eq__(other)
